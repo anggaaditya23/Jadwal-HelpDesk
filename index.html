@@ -126,7 +126,6 @@ th:first-child,td:first-child{
 .P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
 .S{background:#fef3c7;color:#92400e;border-color:#fde68a}
 .M{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
-.A{background:#fce7f3;color:#9d174d;border-color:#fbcfe8}
 .L,.R{
   background:#dcfce7;
   color:#166534;
@@ -301,7 +300,6 @@ footer{
       <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
       <span class="legend-item"><i class="dot" style="background:#fef3c7"></i>Siang (S)</span>
       <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
-      <span class="legend-item"><i class="dot" style="background:#fce7f3"></i>Alpha (A)</span>
       <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>OFF (L / R)</span>
       <span class="legend-item"><i class="dot" style="background:#ffedd5"></i>Cuti (C)</span>
       <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Tanggal Merah</span>
@@ -321,8 +319,7 @@ footer{
       M = Shift Malam &nbsp; | &nbsp;
       L = Libur &nbsp; | &nbsp;
       R = OFF / Rest &nbsp; | &nbsp;
-      C = Cuti &nbsp; | &nbsp;
-      A = Alpha
+      C = Cuti
     </p>
     <p class="note">
       Warna merah menandakan hari Sabtu, Minggu, dan libur nasional.
@@ -336,9 +333,11 @@ footer{
 
 <script>
 const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
-const codes=["-","P","S","M","L","A","R","C"];
 
-/* Daftar hari libur nasional resmi 2026 dan 2027 */
+/* Kode shift tanpa Alpha */
+const codes=["-","P","S","M","L","R","C"];
+
+/* Daftar hari libur nasional 2026 dan 2027 */
 const holidays=new Set([
 
   // Tahun 2026
@@ -459,7 +458,7 @@ function editShift(employee,date){
 
   const answer=prompt(
     "Ubah jadwal "+employee+" tanggal "+dateKey(date)+"\n\n"+
-    "P = Pagi\nS = Siang\nM = Malam\nL = OFF\nR = OFF\nA = Alpha\nC = Cuti\n- = Kosong\n\n"+
+    "P = Pagi\nS = Siang\nM = Malam\nL = OFF\nR = OFF\nC = Cuti\n- = Kosong\n\n"+
     "Masukkan kode jadwal:",
     current
   );
@@ -469,7 +468,7 @@ function editShift(employee,date){
   const value=answer.trim().toUpperCase();
 
   if(!codes.includes(value)){
-    alert("Kode tidak valid. Gunakan: P, S, M, L, A, R, C, atau -");
+    alert("Kode tidak valid. Gunakan: P, S, M, L, R, C, atau -");
     return;
   }
 
@@ -554,7 +553,7 @@ function renderSummary(){
   let html="";
 
   employees.forEach(employee=>{
-    const c={P:0,S:0,M:0,L:0,R:0,A:0,C:0,blank:0};
+    const c={P:0,S:0,M:0,L:0,R:0,C:0,blank:0};
 
     dates.forEach(date=>{
       const value=data[employee+"_"+dateKey(date)]||"-";
@@ -574,7 +573,6 @@ function renderSummary(){
         <p>Total Hari Kerja: <b>${total}</b></p>
         <p>OFF (L + R): <b>${totalOff}</b></p>
         <p>Cuti (C): <b>${c.C}</b></p>
-        <p>Alpha (A): <b>${c.A}</b></p>
         <p>Kosong (-): <b>${c.blank}</b></p>
       </div>
     `;
