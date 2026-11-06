@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jadwal Shift Karyawan</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f5f9;color:#202938;font-family:Arial,sans-serif}
+header{background:#172554;color:white;padding:24px 5%}
+header h1{margin:0;font-size:24px}
+header p{margin:7px 0 0;color:#cbd5e1}
+main{max-width:1200px;margin:25px auto;padding:0 16px}
+.panel{background:white;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 14px #1725540c}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+button,select{padding:10px 14px;border:1px solid #dbe1ea;border-radius:8px;background:white;cursor:pointer}
+button.primary{background:#1d4ed8;color:white;border:0}
+.month{font-size:20px;font-weight:bold}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{border:1px solid #e5e7eb;padding:9px;text-align:center}
+th{background:#f8fafc;font-size:12px}
+td:first-child{text-align:left;font-weight:bold}
+.shift{border:0;border-radius:6px;padding:7px 10px;min-width:38px;font-weight:bold}
+.P{background:#dbeafe;color:#1d4ed8}
+.S{background:#fef3c7;color:#92400e}
+.M{background:#ede9fe;color:#6d28d9}
+.L{background:#dcfce7;color:#166534}
+.A{background:#fee2e2;color:#991b1b}
+.tablewrap{overflow-x:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.stat{background:#f8fafc;padding:15px;border-radius:10px}
+.stat strong{display:block;font-size:24px;margin-top:6px}
+small{color:#64748b}
+@media(max-width:600px){header{padding:20px}.panel{padding:13px}.month{font-size:17px}}
+</style>
+</head>
+<body>
+<header>
+<h1>Jadwal Shift Karyawan</h1>
+<p>Dashboard pengaturan jadwal kerja</p>
+</header>
+<main>
+<section class="panel">
+<div class="toolbar">
+<div>
+<div class="month" id="monthName"></div>
+<small>Klik kode shift untuk mengubah jadwal</small>
+</div>
+<div>
+<button onclick="changeMonth(-1)">‹</button>
+<button onclick="changeMonth(1)">›</button>
+<button class="primary" onclick="resetMonth()">Bulan ini</button>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<div class="toolbar">
+<h3>Kalender Jadwal</h3>
+<button class="primary" onclick="exportCSV()">Unduh Excel (CSV)</button>
+</div>
+<div class="tablewrap">
+<table id="schedule"></table>
+</div>
+<p><small>Pagi (P) · Siang (S) · Malam (M) · Libur (L) · Absen (A) · Kosong (-)</small></p>
+</section>
+
+<section class="panel">
+<h3>Rekap Shift Bulan Ini</h3>
+<div class="stats" id="summary"></div>
+</section>
+</main>
+<script>
+const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
+const codes=["-","P","S","M","L","A"];
+let shown=new Date();
+let data=JSON.parse(localStorage.getItem("jadwalShift")||"{}");
+
+function key(){return shown.getFullYear()+"-"+(shown.getMonth()+1)}
+function save(){localStorage.setItem("jadwalShift",JSON.stringify(data))}
+function changeMonth(n){shown.setMonth(shown.getMonth()+n);render()}
+function resetMonth(){shown=new Date();render()}
+function render(){
+ const y=shown.getFullYear(),m=shown.getMonth(),days=new Date(y,m+1,0).getDate();
+ document.getElementById("monthName").textContent=shown.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+ let html="<tr><th>Karyawan</th>";
+ for(let d=1;d<=days;d++)html+=`<th>${d}</th>`;
+ html+="</tr>";
+ employees.forEach((name,i)=>{
+  html+=`<tr><td>${name}</td>`;
+  for(let d=1;d<=days;d++){
+   const k=`${key()}-${i}-${d}`,v=data[k]||"-";
+   html+=`<td><button class="shift ${v}" onclick="editShift(${i},${d})">${v}</button></td>`;
+  }
+  html+="</tr>";
+ });
+ document.getElementById("schedule").innerHTML=html;
+ renderSummary(days);
+}
+function editShift(i,d){
+ const k=`${key()}-${i}-${d}`;
+ const current=data[k]||"-";
+ const answer=prompt(`Jadwal ${employees[i]} tanggal ${d}\nIsi: P / S / M / L / A / -`,current);
+ if(answer===null)return;
+ const v=answer.trim().toUpperCase();
+ if(!codes.includes(v)){alert("Gunakan kode P, S, M, L, A, atau -.");return}
+ if(v==="-")delete data[k];else data[k]=v;
+ save();render();
+}
+function renderSummary(days){
+ let html="";
+ employees.forEach((name,i)=>{
+  let counts={P:0,S:0,M:0,L:0,A:0};
+  for(let d=1;d<=days;d++){
+   const v=data[`${key()}-${i}-${d}`];
+   if(counts[v]!==undefined)counts[v]++;
+  }
+  html+=`<div class="stat"><b>${name}</b><strong>${counts.P+counts.S+counts.M}</strong><small>P ${counts.P} · S ${counts.S} · M ${counts.M} · L ${counts.L}</small></div>`;
+ });
+ document.getElementById("summary").innerHTML=html;
+}
+function exportCSV(){
+ const y=shown.getFullYear(),m=shown.getMonth(),days=new Date(y,m+1,0).getDate();
+ let rows=[["Karyawan",...Array.from({length:days},(_,i)=>i+1)]];
+ employees.forEach((name,i)=>rows.push([name,...Array.from({length:days},(_,j)=>data[`${key()}-${i}-${j+1}`]||"-")]));
+ const csv="\uFEFF"+rows.map(r=>r.join(";")).join("\n");
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ a.download="jadwal-shift-"+key()+".csv";a.click();
+}
+render();
+</script>
+</body>
+</html>
