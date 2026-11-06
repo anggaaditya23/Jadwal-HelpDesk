@@ -152,16 +152,10 @@ header h1{font-size:22px}
   <section class="tab-content active" id="tab-jadwal">
     <section class="panel">
       <h2>Kontrol Jadwal</h2>
-      <div class="note" style="margin-bottom:12px">
-        Generate jadwal akan menyalin pola shift berdasarkan urutan tanggal periode sebelumnya.
-        Admin tetap dapat mengedit hasilnya secara manual.
-      </div>
       <div class="toolbar-buttons">
-        <button class="btn-primary" onclick="generateNextPeriod()">⚡ Generate Jadwal Periode Berikutnya</button>
         <button class="btn-success" onclick="toggleLock()">🔒 Kunci / Buka Jadwal</button>
         <button class="btn-light" onclick="exportCSV()">Export CSV</button>
       </div>
-      <div id="generateMessage" style="margin-top:12px"></div>
     </section>
 
     <section class="panel">
@@ -248,7 +242,7 @@ header h1{font-size:22px}
       <h2>Pengaturan Target OFF Karyawan</h2>
       <div class="alert alert-warning">
         Target OFF di bawah ini merupakan acuan administrasi sesuai aturan kantor.
-        Silakan ubah sesuai ketentuan yang berlaku. Generator menyalin pola periode sebelumnya dan tidak memaksakan jumlah OFF.
+        Silakan ubah sesuai ketentuan yang berlaku.
       </div>
       <div class="table-wrap">
         <table class="setting-table">
@@ -266,7 +260,6 @@ header h1{font-size:22px}
       <p class="note">
         • Pola shift ditentukan manual oleh admin.<br>
         • Periode jadwal selalu tanggal 16 sampai tanggal 15 bulan berikutnya.<br>
-        • Generate jadwal menyalin pola shift berdasarkan urutan tanggal periode sebelumnya.<br>
         • Request yang disetujui akan mengubah jadwal tanggal tersebut menjadi L.<br>
         • Jika tanggal request sudah memiliki jadwal, persetujuan akan mengganti kode shift menjadi L.<br>
         • Jadwal yang dikunci tidak dapat diedit atau diubah melalui persetujuan request.<br>
@@ -460,67 +453,6 @@ function editShift(employee,date){
   data[key]=value;
   saveData();
   render();
-}
-
-/* =========================
-   GENERATE JADWAL BERIKUTNYA
-========================= */
-
-function generateNextPeriod(){
-  const currentDates=getDates();
-  const nextPeriod=new Date(shown.getFullYear(),shown.getMonth()+1,1);
-  const nextDates=getDates(nextPeriod);
-  const nextId=periodId(nextPeriod);
-
-  if(locks[nextId]){
-    alert("Periode berikutnya sudah dikunci. Buka kunci terlebih dahulu.");
-    return;
-  }
-
-  const alreadyExists=nextDates.some(date=>
-    employees.some(employee=>
-      data[employee+"_"+dateKey(date)]!==undefined
-    )
-  );
-
-  let message=
-    "Sistem akan menyalin pola jadwal periode saat ini ke periode berikutnya.\n\n"+
-    "Periode tujuan: "+
-    formatDate(dateKey(nextDates[0]))+" sampai "+
-    formatDate(dateKey(nextDates[nextDates.length-1]))+
-    "\n\nJadwal yang sudah ada pada periode tujuan akan ditimpa.";
-
-  if(alreadyExists){
-    message+="\n\nPERHATIAN: Jadwal periode tujuan sudah memiliki data.";
-  }
-
-  if(!confirm(message))return;
-
-  employees.forEach(employee=>{
-    nextDates.forEach((nextDate,index)=>{
-      const newKey=employee+"_"+dateKey(nextDate);
-
-      if(index<currentDates.length){
-        const oldKey=employee+"_"+dateKey(currentDates[index]);
-        data[newKey]=data[oldKey]||"-";
-      }else{
-        data[newKey]="-";
-      }
-    });
-  });
-
-  requests.forEach(req=>{
-    if(req.status==="approved" && nextDates.some(d=>dateKey(d)===req.date)){
-      data[req.employee+"_"+req.date]="L";
-    }
-  });
-
-  saveData();
-  shown=nextPeriod;
-  render();
-
-  document.getElementById("generateMessage").innerHTML=
-    '<div class="alert alert-success">Jadwal berhasil dibuat sesuai periode tanggal 16 sampai 15.</div>';
 }
 
 /* =========================
