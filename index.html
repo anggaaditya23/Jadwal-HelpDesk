@@ -50,34 +50,19 @@ header{
  flex-wrap:wrap;
 }
 
-.brand{
- display:flex;
- align-items:center;
- gap:13px;
-}
+.brand{display:flex;align-items:center;gap:13px}
 
 .logo{
- width:46px;
- height:46px;
+ width:46px;height:46px;
  background:#ffffff18;
  border:1px solid #ffffff30;
  border-radius:13px;
- display:grid;
- place-items:center;
+ display:grid;place-items:center;
  font-size:23px;
 }
 
-header h1{
- margin:0;
- font-size:23px;
- letter-spacing:.3px;
-}
-
-header p{
- margin:6px 0 0;
- color:#cbd5e1;
- font-size:13px;
-}
+header h1{margin:0;font-size:23px;letter-spacing:.3px}
+header p{margin:6px 0 0;color:#cbd5e1;font-size:13px}
 
 .header-label{
  border:1px solid #ffffff35;
@@ -87,11 +72,7 @@ header p{
  color:#dbeafe;
 }
 
-main{
- max-width:1400px;
- margin:28px auto;
- padding:0 20px;
-}
+main{max-width:1400px;margin:28px auto;padding:0 20px}
 
 .panel{
  background:var(--white);
@@ -110,37 +91,21 @@ main{
  gap:14px;
 }
 
-.section-title{
- margin:0;
- font-size:17px;
- font-weight:700;
- color:var(--navy);
-}
-
-.section-desc{
- margin:6px 0 0;
- color:var(--muted);
- font-size:12px;
-}
+.section-title{margin:0;font-size:17px;font-weight:700;color:var(--navy)}
+.section-desc{margin:6px 0 0;color:var(--muted);font-size:12px}
 
 .period-card{
  background:linear-gradient(120deg,#ffffff,#f5f8ff);
  border:1px solid #dbeafe;
 }
 
-.period-info{
- display:flex;
- align-items:center;
- gap:15px;
-}
+.period-info{display:flex;align-items:center;gap:15px}
 
 .period-icon{
- width:48px;
- height:48px;
+ width:48px;height:48px;
  border-radius:13px;
  background:#dbeafe;
- display:grid;
- place-items:center;
+ display:grid;place-items:center;
  font-size:23px;
 }
 
@@ -152,29 +117,11 @@ main{
  font-weight:700;
 }
 
-.period-name{
- font-size:21px;
- font-weight:800;
- color:var(--navy);
- margin-top:5px;
-}
+.period-name{font-size:21px;font-weight:800;color:var(--navy);margin-top:5px}
+.period-sub{font-size:12px;color:var(--muted);margin-top:5px}
+.nav-buttons{display:flex;gap:8px}
 
-.period-sub{
- font-size:12px;
- color:var(--muted);
- margin-top:5px;
-}
-
-.nav-buttons{
- display:flex;
- gap:8px;
-}
-
-button{
- font-family:inherit;
- cursor:pointer;
- transition:.2s;
-}
+button{font-family:inherit;cursor:pointer;transition:.2s}
 
 .btn{
  padding:10px 15px;
@@ -186,26 +133,10 @@ button{
  font-weight:700;
 }
 
-.btn:hover{
- background:#f1f5f9;
- transform:translateY(-1px);
-}
-
-.btn-primary{
- background:var(--blue);
- color:white;
- border:1px solid var(--blue);
-}
-
-.btn-primary:hover{
- background:#1d4ed8;
-}
-
-.btn-dark{
- background:var(--navy);
- color:white;
- border:1px solid var(--navy);
-}
+.btn:hover{background:#f1f5f9;transform:translateY(-1px)}
+.btn-primary{background:var(--blue);color:white;border:1px solid var(--blue)}
+.btn-primary:hover{background:#1d4ed8}
+.btn-dark{background:var(--navy);color:white;border:1px solid var(--navy)}
 
 .stats-grid{
  display:grid;
@@ -222,49 +153,25 @@ button{
  box-shadow:0 4px 15px #14213d05;
 }
 
-.stat-top{
- display:flex;
- align-items:center;
- justify-content:space-between;
-}
-
-.stat-label{
- color:var(--muted);
- font-size:12px;
- font-weight:600;
-}
+.stat-top{display:flex;align-items:center;justify-content:space-between}
+.stat-label{color:var(--muted);font-size:12px;font-weight:600}
 
 .stat-icon{
- width:36px;
- height:36px;
- display:grid;
- place-items:center;
+ width:36px;height:36px;
+ display:grid;place-items:center;
  border-radius:10px;
  font-size:17px;
 }
 
-.stat-value{
- font-size:28px;
- font-weight:800;
- margin-top:12px;
- color:var(--navy);
-}
-
-.stat-note{
- color:var(--muted);
- font-size:11px;
- margin-top:4px;
-}
+.stat-value{font-size:28px;font-weight:800;margin-top:12px;color:var(--navy)}
+.stat-note{color:var(--muted);font-size:11px;margin-top:4px}
 
 .icon-blue{background:#dbeafe}
 .icon-green{background:#dcfce7}
 .icon-purple{background:#ede9fe}
 .icon-orange{background:#ffedd5}
 
-.table-panel{
- padding:0;
- overflow:hidden;
-}
+.table-panel{padding:0;overflow:hidden}
 
 .table-heading{
  padding:21px;
@@ -275,10 +182,7 @@ button{
  gap:12px;
 }
 
-.tablewrap{
- overflow:auto;
- border-top:1px solid var(--border);
-}
+.tablewrap{overflow:auto;border-top:1px solid var(--border)}
 
 table{
  width:100%;
@@ -325,36 +229,14 @@ td:first-child{
  color:var(--navy);
 }
 
-tbody tr:hover td{
- background:#f8fbff;
-}
+tbody tr:hover td{background:#f8fbff}
+tbody tr:hover td:first-child{background:#f1f6ff}
 
-tbody tr:hover td:first-child{
- background:#f1f6ff;
-}
+.datehead{display:block;font-size:13px;font-weight:800;color:#334155}
+.dayhead{display:block;font-size:10px;color:#94a3b8;margin-top:4px}
 
-.datehead{
- display:block;
- font-size:13px;
- font-weight:800;
- color:#334155;
-}
-
-.dayhead{
- display:block;
- font-size:10px;
- color:#94a3b8;
- margin-top:4px;
-}
-
-.red-day{
- background:var(--red-bg)!important;
-}
-
-.red-day .datehead,
-.red-day .dayhead{
- color:var(--red)!important;
-}
+.red-day{background:var(--red-bg)!important}
+.red-day .datehead,.red-day .dayhead{color:var(--red)!important}
 
 .shift{
  min-width:34px;
@@ -366,37 +248,20 @@ tbody tr:hover td:first-child{
  font-weight:800;
 }
 
-.shift:hover{
- transform:scale(1.08);
- box-shadow:0 3px 8px #00000012;
-}
+.shift:hover{transform:scale(1.08);box-shadow:0 3px 8px #00000012}
 
 .P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
 .S{background:#fef3c7;color:#92400e;border-color:#fde68a}
 .M{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
 .L{background:#dcfce7;color:#166534;border-color:#bbf7d0}
 .A{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.R{background:#e0f2fe;color:#075985;border-color:#bae6fd}
+.C{background:#fce7f3;color:#9d174d;border-color:#fbcfe8}
+.shift.-{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0}
 
-.legend{
- display:flex;
- gap:14px;
- flex-wrap:wrap;
- padding:15px 21px;
-}
-
-.legend-item{
- display:flex;
- align-items:center;
- gap:6px;
- color:var(--muted);
- font-size:11px;
-}
-
-.dot{
- width:10px;
- height:10px;
- border-radius:3px;
-}
+.legend{display:flex;gap:14px;flex-wrap:wrap;padding:15px 21px}
+.legend-item{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
+.dot{width:10px;height:10px;border-radius:3px}
 
 .summary-grid{
  display:grid;
@@ -412,31 +277,11 @@ tbody tr:hover td:first-child{
  background:#fff;
 }
 
-.summary-name{
- font-weight:800;
- color:var(--navy);
- font-size:13px;
-}
+.summary-name{font-weight:800;color:var(--navy);font-size:13px}
+.summary-total{font-size:27px;font-weight:800;color:var(--blue);margin:9px 0}
+.summary-detail{font-size:11px;line-height:1.9;color:var(--muted)}
 
-.summary-total{
- font-size:27px;
- font-weight:800;
- color:var(--blue);
- margin:9px 0;
-}
-
-.summary-detail{
- font-size:11px;
- line-height:1.9;
- color:var(--muted);
-}
-
-footer{
- text-align:center;
- color:#94a3b8;
- font-size:11px;
- padding:10px 15px 30px;
-}
+footer{text-align:center;color:#94a3b8;font-size:11px;padding:10px 15px 30px}
 
 @media(max-width:800px){
  .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -478,7 +323,6 @@ footer{
 
 <main>
 
-<!-- PERIODE -->
 <section class="panel period-card">
  <div class="toolbar">
   <div class="period-info">
@@ -498,7 +342,6 @@ footer{
  </div>
 </section>
 
-<!-- STATISTIK -->
 <section class="stats-grid">
 
  <div class="stat-card">
@@ -539,7 +382,6 @@ footer{
 
 </section>
 
-<!-- KALENDER -->
 <section class="panel table-panel">
 
  <div class="table-heading">
@@ -563,12 +405,13 @@ footer{
   <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
   <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>Libur (L)</span>
   <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Absen (A)</span>
+  <span class="legend-item"><i class="dot" style="background:#e0f2fe"></i>R</span>
+  <span class="legend-item"><i class="dot" style="background:#fce7f3"></i>C</span>
   <span class="legend-item"><i class="dot" style="background:#fff1f2"></i>Tanggal Merah</span>
  </div>
 
 </section>
 
-<!-- REKAP -->
 <section class="panel">
  <div>
   <h3 class="section-title">Rekapitulasi Shift</h3>
@@ -587,20 +430,15 @@ footer{
 <script>
 
 // ======================================
-// DATA KARYAWAN
+// DATA KARYAWAN DAN KODE SHIFT
 // ======================================
 
-const employees=[
- "HUDA","SAHRUL","FERDI",
- "MANAP","PAREL","ADIT"
-];
-
-const codes=["-","P","S","M","L","A"];
+const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
+const codes=["-","P","S","M","L","A","R","C"];
 
 // ======================================
 // TANGGAL MERAH NASIONAL
-// Format YYYY-MM-DD
-// Perbarui sesuai kalender resmi pemerintah
+// Sabtu dan Minggu otomatis merah
 // ======================================
 
 const holidays=new Set([
@@ -611,38 +449,56 @@ const holidays=new Set([
  "2026-05-01","2026-05-14","2026-05-15",
  "2026-05-27","2026-05-28","2026-05-31",
  "2026-06-01","2026-06-16","2026-08-17",
- "2026-08-25","2026-12-24","2026-12-25",
-
- "2027-01-01","2027-01-05","2027-02-05",
- "2027-02-06","2027-03-08","2027-03-09",
- "2027-03-10","2027-03-11","2027-03-12",
- "2027-03-15","2027-03-25","2027-03-26",
- "2027-03-28","2027-05-01","2027-05-06",
- "2027-05-17","2027-05-18","2027-05-19",
- "2027-05-20","2027-06-01","2027-06-06",
- "2027-08-15","2027-08-17","2027-12-24",
- "2027-12-25","2027-12-26"
+ "2026-08-25","2026-12-24","2026-12-25"
 ]);
 
 // ======================================
-// PENENTUAN PERIODE
+// PERIODE AWAL
+// 16 NOVEMBER - 15 DESEMBER 2026
 // ======================================
 
-let today=new Date();
-
-let shown=new Date(
- today.getFullYear(),
- today.getMonth(),
- 1
-);
-
-if(today.getDate()<16){
- shown.setMonth(shown.getMonth()-1);
-}
+let shown=new Date(2026,10,1);
 
 let data=JSON.parse(
  localStorage.getItem("jadwalShift")||"{}"
 );
+
+// ======================================
+// JADWAL AWAL KARYAWAN
+// ======================================
+
+const initialSchedule={
+ HUDA:[
+  "S","P","S","S","P","R","L","S","S","P",
+  "P","S","R","R","S","S","P","L","P","P",
+  "P","L","C","C","S","P","R","R","S","P"
+ ],
+ SAHRUL:[
+  "P","S","R","R","S","S","S","L","P","P",
+  "P","P","R","R","P","P","S","S","C","L",
+  "P","S","S","L","L","P","P","P","P","S"
+ ],
+ FERDI:[
+  "R","R","S","P","S","P","S","R","R","S",
+  "S","P","S","S","R","R","S","P","S","S",
+  "S","C","C","S","P","S","S","S","R","R"
+ ],
+ MANAP:[
+  "P","P","P","S","L","S","P","P","P","P",
+  "C","C","L","P","P","S","P","P","L","L",
+  "L","S","S","S","L","L","P","S","S","L"
+ ],
+ PAREL:[
+  "S","S","L","P","P","P","P","S","L","L",
+  "L","S","P","R","R","P","P","S","S","R",
+  "R","P","P","P","P","C","C","P","P","S"
+ ],
+ ADIT:[
+  "P","P","P","C","C","R","R","P","S","S",
+  "S","R","P","P","S","L","L","P","P","P",
+  "L","P","P","P","S","S","R","L","P","P"
+ ]
+};
 
 // ======================================
 // FUNGSI TANGGAL
@@ -674,10 +530,34 @@ function isRedDay(date){
 }
 
 function save(){
- localStorage.setItem(
-  "jadwalShift",
-  JSON.stringify(data)
- );
+ localStorage.setItem("jadwalShift",JSON.stringify(data));
+}
+
+// ======================================
+// INPUT JADWAL AWAL
+// HANYA MENGISI DATA YANG BELUM ADA
+// ======================================
+
+function inputInitialSchedule(){
+
+ employees.forEach((name,i)=>{
+
+  const shifts=initialSchedule[name];
+
+  shifts.forEach((shift,dayIndex)=>{
+
+   const date=new Date(2026,10,16+dayIndex);
+   const k=`2026-11-${i}-${dateKey(date)}`;
+
+   if(data[k]===undefined){
+    data[k]=shift;
+   }
+
+  });
+
+ });
+
+ save();
 }
 
 // ======================================
@@ -690,10 +570,7 @@ function migrateOldData(){
 
  Object.keys(data).forEach(oldKey=>{
 
-  const match=oldKey.match(
-   /^(\d{4})-(\d+)-(\d+)-(\d+)$/
-  );
-
+  const match=oldKey.match(/^(\d{4})-(\d+)-(\d+)-(\d+)$/);
   if(!match)return;
 
   const year=Number(match[1]);
@@ -701,23 +578,20 @@ function migrateOldData(){
   const employee=Number(match[3]);
   const day=Number(match[4]);
 
-  if(employee<0 || employee>=employees.length)return;
+  if(employee<0||employee>=employees.length)return;
 
   const date=new Date(year,month,day);
 
-  if(date.getFullYear()!==year ||
-     date.getMonth()!==month ||
+  if(date.getFullYear()!==year||
+     date.getMonth()!==month||
      date.getDate()!==day)return;
 
   const period=new Date(year,month,1);
 
   if(day<16)period.setMonth(period.getMonth()-1);
 
-  const periodKey=
-   period.getFullYear()+"-"+(period.getMonth()+1);
-
-  const newKey=
-   `${periodKey}-${employee}-${dateKey(date)}`;
+  const periodKey=period.getFullYear()+"-"+(period.getMonth()+1);
+  const newKey=`${periodKey}-${employee}-${dateKey(date)}`;
 
   if(data[newKey]===undefined){
    data[newKey]=data[oldKey];
@@ -741,9 +615,7 @@ function getPeriodDates(){
  const year=shown.getFullYear();
  const month=shown.getMonth();
 
- const lastDay=new Date(
-  year,month+1,0
- ).getDate();
+ const lastDay=new Date(year,month+1,0).getDate();
 
  for(let d=16;d<=lastDay;d++){
   dates.push(new Date(year,month,d));
@@ -758,14 +630,11 @@ function getPeriodDates(){
 
 function periodName(){
  const dates=getPeriodDates();
-
- return formatDate(dates[0])+
- " – "+
- formatDate(dates[dates.length-1]);
+ return formatDate(dates[0])+" – "+formatDate(dates[dates.length-1]);
 }
 
 // ======================================
-// NAVIGASI
+// NAVIGASI PERIODE
 // ======================================
 
 function changeMonth(n){
@@ -774,50 +643,30 @@ function changeMonth(n){
 }
 
 function resetMonth(){
-
- const now=new Date();
-
- shown=new Date(
-  now.getFullYear(),
-  now.getMonth(),
-  1
- );
-
- if(now.getDate()<16){
-  shown.setMonth(shown.getMonth()-1);
- }
-
+ shown=new Date(2026,10,1);
  render();
 }
 
 // ======================================
-// KALENDER
+// TAMPILKAN KALENDER
 // ======================================
 
 function render(){
 
  const dates=getPeriodDates();
 
- document.getElementById("monthName").textContent=
- periodName();
+ document.getElementById("monthName").textContent=periodName();
 
  let html="<thead><tr><th>Karyawan</th>";
 
  dates.forEach(date=>{
 
-  const weekday=date.toLocaleDateString(
-   "id-ID",{weekday:"short"}
-  );
-
-  const month=date.toLocaleDateString(
-   "id-ID",{month:"short"}
-  );
+  const weekday=date.toLocaleDateString("id-ID",{weekday:"short"});
+  const month=date.toLocaleDateString("id-ID",{month:"short"});
 
   html+=`
    <th class="${isRedDay(date)?"red-day":""}">
-    <span class="datehead">
-     ${date.getDate()} ${month}
-    </span>
+    <span class="datehead">${date.getDate()} ${month}</span>
     <span class="dayhead">${weekday}</span>
    </th>
   `;
@@ -831,10 +680,8 @@ function render(){
 
   dates.forEach(date=>{
 
-   const k=
-    `${key()}-${i}-${dateKey(date)}`;
-
-   const v=data[k]||"-";
+   const k=`${key()}-${i}-${dateKey(date)}`;
+   const v=data[k]===undefined?"-":data[k];
 
    html+=`
     <td class="${isRedDay(date)?"red-day":""}">
@@ -848,7 +695,6 @@ function render(){
   });
 
   html+="</tr>";
-
  });
 
  html+="</tbody>";
@@ -865,13 +711,11 @@ function render(){
 
 function editShift(i,dateString){
 
- const k=
-  `${key()}-${i}-${dateString}`;
-
- const current=data[k]||"-";
+ const k=`${key()}-${i}-${dateString}`;
+ const current=data[k]===undefined?"-":data[k];
 
  const answer=prompt(
-  `Jadwal ${employees[i]} tanggal ${dateString}\n\nP = Pagi\nS = Siang\nM = Malam\nL = Libur\nA = Absen\n- = Kosong`,
+  `Jadwal ${employees[i]} tanggal ${dateString}\n\nP = Pagi\nS = Siang\nM = Malam\nL = Libur\nA = Absen\nR = Kode R\nC = Kode C\n- = Kosong`,
   current
  );
 
@@ -880,12 +724,12 @@ function editShift(i,dateString){
  const v=answer.trim().toUpperCase();
 
  if(!codes.includes(v)){
-  alert("Gunakan kode P, S, M, L, A, atau -.");
+  alert("Gunakan kode P, S, M, L, A, R, C, atau -.");
   return;
  }
 
- if(v==="-")delete data[k];
- else data[k]=v;
+ // Simpan tanda "-" agar jadwal awal tidak muncul kembali
+ data[k]=v;
 
  save();
  render();
@@ -901,13 +745,11 @@ function renderSummary(dates){
 
  employees.forEach((name,i)=>{
 
-  let c={P:0,S:0,M:0,L:0,A:0};
+  let c={P:0,S:0,M:0,L:0,A:0,R:0,C:0};
 
   dates.forEach(date=>{
 
-   const v=data[
-    `${key()}-${i}-${dateKey(date)}`
-   ];
+   const v=data[`${key()}-${i}-${dateKey(date)}`];
 
    if(c[v]!==undefined)c[v]++;
 
@@ -924,7 +766,9 @@ function renderSummary(dates){
      Siang: ${c.S}<br>
      Malam: ${c.M}<br>
      Libur: ${c.L}<br>
-     Absen: ${c.A}
+     Absen: ${c.A}<br>
+     R: ${c.R}<br>
+     C: ${c.C}
     </div>
    </div>
   `;
@@ -948,9 +792,7 @@ function renderStats(dates){
 
   dates.forEach(date=>{
 
-   const v=data[
-    `${key()}-${i}-${dateKey(date)}`
-   ];
+   const v=data[`${key()}-${i}-${dateKey(date)}`];
 
    if(["P","S","M"].includes(v))totalShift++;
    if(v==="L")totalLeave++;
@@ -960,17 +802,10 @@ function renderStats(dates){
 
  });
 
- document.getElementById("totalEmployee").textContent=
- employees.length;
-
- document.getElementById("totalShift").textContent=
- totalShift;
-
- document.getElementById("totalLeave").textContent=
- totalLeave;
-
- document.getElementById("totalAbsent").textContent=
- totalAbsent;
+ document.getElementById("totalEmployee").textContent=employees.length;
+ document.getElementById("totalShift").textContent=totalShift;
+ document.getElementById("totalLeave").textContent=totalLeave;
+ document.getElementById("totalAbsent").textContent=totalAbsent;
 }
 
 // ======================================
@@ -989,23 +824,17 @@ function exportCSV(){
 
   rows.push([
    name,
-   ...dates.map(date=>
-    data[
-     `${key()}-${i}-${dateKey(date)}`
-    ]||"-"
-   )
+   ...dates.map(date=>{
+    const v=data[`${key()}-${i}-${dateKey(date)}`];
+    return v===undefined?"-":v;
+   })
   ]);
 
  });
 
- const csv="\uFEFF"+
- rows.map(r=>r.join(";")).join("\n");
+ const csv="\uFEFF"+rows.map(r=>r.join(";")).join("\n");
 
- const blob=new Blob(
-  [csv],
-  {type:"text/csv;charset=utf-8"}
- );
-
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
 
@@ -1013,9 +842,7 @@ function exportCSV(){
  a.download="WorkShift-"+key()+"-16-15.csv";
  a.click();
 
- setTimeout(()=>{
-  URL.revokeObjectURL(url);
- },1000);
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 // ======================================
@@ -1023,6 +850,7 @@ function exportCSV(){
 // ======================================
 
 migrateOldData();
+inputInitialSchedule();
 render();
 
 </script>
