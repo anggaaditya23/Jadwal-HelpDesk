@@ -4,176 +4,459 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jadwal Shift Karyawan</title>
+<title>WorkShift | Dashboard Jadwal</title>
 
 <style>
+:root{
+ --navy:#14213d;
+ --blue:#2563eb;
+ --blue-light:#eff6ff;
+ --bg:#f4f6fb;
+ --white:#ffffff;
+ --text:#1e293b;
+ --muted:#64748b;
+ --border:#e8edf5;
+ --red:#dc2626;
+ --red-bg:#fff1f2;
+ --green:#15803d;
+ --purple:#7c3aed;
+ --orange:#b45309;
+}
+
 *{box-sizing:border-box}
 
 body{
  margin:0;
- background:#f3f5f9;
- color:#202938;
- font-family:Arial,sans-serif
+ background:var(--bg);
+ color:var(--text);
+ font-family:Inter,Arial,sans-serif;
+ font-size:14px;
 }
 
 header{
- background:#172554;
+ background:linear-gradient(120deg,#101d38,#1e3a70);
  color:white;
- padding:24px 5%
+ padding:25px 5%;
+ box-shadow:0 5px 20px #14213d20;
 }
 
-header h1{margin:0;font-size:24px}
-header p{margin:7px 0 0;color:#cbd5e1}
+.header-content{
+ max-width:1400px;
+ margin:auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:13px;
+}
+
+.logo{
+ width:46px;
+ height:46px;
+ background:#ffffff18;
+ border:1px solid #ffffff30;
+ border-radius:13px;
+ display:grid;
+ place-items:center;
+ font-size:23px;
+}
+
+header h1{
+ margin:0;
+ font-size:23px;
+ letter-spacing:.3px;
+}
+
+header p{
+ margin:6px 0 0;
+ color:#cbd5e1;
+ font-size:13px;
+}
+
+.header-label{
+ border:1px solid #ffffff35;
+ padding:9px 14px;
+ border-radius:30px;
+ font-size:12px;
+ color:#dbeafe;
+}
 
 main{
- max-width:1200px;
- margin:25px auto;
- padding:0 16px
+ max-width:1400px;
+ margin:28px auto;
+ padding:0 20px;
 }
 
 .panel{
- background:white;
- border-radius:14px;
- padding:20px;
- margin-bottom:18px;
- box-shadow:0 3px 14px #1725540c
+ background:var(--white);
+ border:1px solid var(--border);
+ border-radius:16px;
+ padding:21px;
+ margin-bottom:20px;
+ box-shadow:0 4px 16px #14213d06;
 }
 
 .toolbar{
  display:flex;
- justify-content:space-between;
  align-items:center;
- gap:10px;
- flex-wrap:wrap
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:14px;
+}
+
+.section-title{
+ margin:0;
+ font-size:17px;
+ font-weight:700;
+ color:var(--navy);
+}
+
+.section-desc{
+ margin:6px 0 0;
+ color:var(--muted);
+ font-size:12px;
+}
+
+.period-card{
+ background:linear-gradient(120deg,#ffffff,#f5f8ff);
+ border:1px solid #dbeafe;
+}
+
+.period-info{
+ display:flex;
+ align-items:center;
+ gap:15px;
+}
+
+.period-icon{
+ width:48px;
+ height:48px;
+ border-radius:13px;
+ background:#dbeafe;
+ display:grid;
+ place-items:center;
+ font-size:23px;
+}
+
+.period-label{
+ color:var(--muted);
+ font-size:11px;
+ text-transform:uppercase;
+ letter-spacing:1px;
+ font-weight:700;
+}
+
+.period-name{
+ font-size:21px;
+ font-weight:800;
+ color:var(--navy);
+ margin-top:5px;
+}
+
+.period-sub{
+ font-size:12px;
+ color:var(--muted);
+ margin-top:5px;
+}
+
+.nav-buttons{
+ display:flex;
+ gap:8px;
 }
 
 button{
- padding:10px 14px;
- border:1px solid #dbe1ea;
- border-radius:8px;
+ font-family:inherit;
+ cursor:pointer;
+ transition:.2s;
+}
+
+.btn{
+ padding:10px 15px;
+ border:1px solid var(--border);
+ border-radius:9px;
  background:white;
- cursor:pointer
+ color:var(--text);
+ font-size:12px;
+ font-weight:700;
 }
 
-button.primary{
- background:#1d4ed8;
+.btn:hover{
+ background:#f1f5f9;
+ transform:translateY(-1px);
+}
+
+.btn-primary{
+ background:var(--blue);
  color:white;
- border:0
+ border:1px solid var(--blue);
 }
 
-.month{font-size:20px;font-weight:bold}
+.btn-primary:hover{
+ background:#1d4ed8;
+}
 
-.tablewrap{overflow-x:auto}
+.btn-dark{
+ background:var(--navy);
+ color:white;
+ border:1px solid var(--navy);
+}
+
+.stats-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px;
+ margin-bottom:20px;
+}
+
+.stat-card{
+ background:white;
+ border:1px solid var(--border);
+ border-radius:15px;
+ padding:19px;
+ box-shadow:0 4px 15px #14213d05;
+}
+
+.stat-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+}
+
+.stat-label{
+ color:var(--muted);
+ font-size:12px;
+ font-weight:600;
+}
+
+.stat-icon{
+ width:36px;
+ height:36px;
+ display:grid;
+ place-items:center;
+ border-radius:10px;
+ font-size:17px;
+}
+
+.stat-value{
+ font-size:28px;
+ font-weight:800;
+ margin-top:12px;
+ color:var(--navy);
+}
+
+.stat-note{
+ color:var(--muted);
+ font-size:11px;
+ margin-top:4px;
+}
+
+.icon-blue{background:#dbeafe}
+.icon-green{background:#dcfce7}
+.icon-purple{background:#ede9fe}
+.icon-orange{background:#ffedd5}
+
+.table-panel{
+ padding:0;
+ overflow:hidden;
+}
+
+.table-heading{
+ padding:21px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:12px;
+}
+
+.tablewrap{
+ overflow:auto;
+ border-top:1px solid var(--border);
+}
 
 table{
  width:100%;
- border-collapse:collapse;
- min-width:850px
+ border-collapse:separate;
+ border-spacing:0;
+ min-width:950px;
 }
 
 th,td{
- border:1px solid #e5e7eb;
- padding:7px;
- text-align:center
+ border-right:1px solid #edf0f5;
+ border-bottom:1px solid #edf0f5;
+ text-align:center;
+ padding:9px 5px;
 }
 
 th{
  background:#f8fafc;
- font-size:12px;
- white-space:nowrap
+ color:#64748b;
+ font-size:11px;
+ font-weight:700;
+ position:sticky;
+ top:0;
+ z-index:2;
+}
+
+th:first-child{
+ position:sticky;
+ left:0;
+ z-index:4;
+ min-width:125px;
+ text-align:left;
+ padding-left:16px;
 }
 
 td:first-child{
- text-align:left;
- font-weight:bold;
  position:sticky;
  left:0;
+ z-index:1;
+ min-width:125px;
+ text-align:left;
+ padding-left:16px;
+ font-weight:700;
  background:white;
- z-index:1
+ color:var(--navy);
 }
 
-.shift{
- border:0;
- border-radius:6px;
- padding:7px 10px;
- min-width:38px;
- font-weight:bold
+tbody tr:hover td{
+ background:#f8fbff;
 }
 
-.P{background:#dbeafe;color:#1d4ed8}
-.S{background:#fef3c7;color:#92400e}
-.M{background:#ede9fe;color:#6d28d9}
-.L{background:#dcfce7;color:#166534}
-.A{background:#fee2e2;color:#991b1b}
-
-.red-day{
- background:#fee2e2 !important;
- color:#b91c1c !important
-}
-
-.red-day .dayhead{
- color:#b91c1c;
- font-weight:bold
+tbody tr:hover td:first-child{
+ background:#f1f6ff;
 }
 
 .datehead{
  display:block;
  font-size:13px;
- font-weight:bold
+ font-weight:800;
+ color:#334155;
 }
 
 .dayhead{
  display:block;
  font-size:10px;
- color:#64748b;
- margin-top:3px
+ color:#94a3b8;
+ margin-top:4px;
 }
 
-.stats{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
- gap:12px
+.red-day{
+ background:var(--red-bg)!important;
 }
 
-.stat{
- background:#f8fafc;
- padding:15px;
- border-radius:10px
+.red-day .datehead,
+.red-day .dayhead{
+ color:var(--red)!important;
 }
 
-.stat strong{
- display:block;
- font-size:24px;
- margin-top:6px
+.shift{
+ min-width:34px;
+ min-height:32px;
+ padding:6px;
+ border:1px solid transparent;
+ border-radius:8px;
+ font-size:11px;
+ font-weight:800;
 }
 
-small{color:#64748b}
+.shift:hover{
+ transform:scale(1.08);
+ box-shadow:0 3px 8px #00000012;
+}
+
+.P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
+.S{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.M{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
+.L{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.A{background:#fee2e2;color:#991b1b;border-color:#fecaca}
 
 .legend{
  display:flex;
+ gap:14px;
  flex-wrap:wrap;
- gap:12px;
- margin-top:12px;
- font-size:12px
+ padding:15px 21px;
 }
 
-.legend span{
+.legend-item{
  display:flex;
  align-items:center;
- gap:5px
+ gap:6px;
+ color:var(--muted);
+ font-size:11px;
 }
 
-.legend i{
- width:12px;
- height:12px;
+.dot{
+ width:10px;
+ height:10px;
  border-radius:3px;
- display:inline-block
 }
 
-@media(max-width:600px){
- header{padding:20px}
- .panel{padding:13px}
- .month{font-size:17px}
+.summary-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:13px;
+ margin-top:17px;
+}
+
+.summary-card{
+ border:1px solid var(--border);
+ border-radius:12px;
+ padding:15px;
+ background:#fff;
+}
+
+.summary-name{
+ font-weight:800;
+ color:var(--navy);
+ font-size:13px;
+}
+
+.summary-total{
+ font-size:27px;
+ font-weight:800;
+ color:var(--blue);
+ margin:9px 0;
+}
+
+.summary-detail{
+ font-size:11px;
+ line-height:1.9;
+ color:var(--muted);
+}
+
+footer{
+ text-align:center;
+ color:#94a3b8;
+ font-size:11px;
+ padding:10px 15px 30px;
+}
+
+@media(max-width:800px){
+ .stats-grid{grid-template-columns:repeat(2,1fr)}
+ .summary-grid{grid-template-columns:repeat(2,1fr)}
+ .period-name{font-size:17px}
+}
+
+@media(max-width:500px){
+ main{padding:0 11px;margin:17px auto}
+ header{padding:20px 16px}
+ header h1{font-size:19px}
+ .panel{padding:15px}
+ .stats-grid{gap:9px}
+ .stat-card{padding:13px}
+ .stat-value{font-size:23px}
+ .summary-grid{grid-template-columns:1fr 1fr}
+ .period-info{gap:10px}
+ .period-icon{width:39px;height:39px}
+ .nav-buttons{width:100%}
+ .nav-buttons button{flex:1}
 }
 </style>
 </head>
@@ -181,146 +464,169 @@ small{color:#64748b}
 <body>
 
 <header>
- <h1>Jadwal Shift Karyawan</h1>
- <p>Dashboard pengaturan jadwal kerja</p>
+ <div class="header-content">
+  <div class="brand">
+   <div class="logo">📅</div>
+   <div>
+    <h1>WorkShift</h1>
+    <p>Employee Shift Management System</p>
+   </div>
+  </div>
+  <div class="header-label">● WORK SCHEDULE DASHBOARD</div>
+ </div>
 </header>
 
 <main>
 
-<section class="panel">
+<!-- PERIODE -->
+<section class="panel period-card">
  <div class="toolbar">
-  <div>
-   <div class="month" id="monthName"></div>
-   <small>Periode jadwal tanggal 16 sampai tanggal 15</small>
+  <div class="period-info">
+   <div class="period-icon">🗓️</div>
+   <div>
+    <div class="period-label">Periode Jadwal Aktif</div>
+    <div class="period-name" id="monthName"></div>
+    <div class="period-sub">Siklus kerja tanggal 16 sampai tanggal 15</div>
+   </div>
   </div>
 
-  <div>
-   <button onclick="changeMonth(-1)">‹</button>
-   <button onclick="changeMonth(1)">›</button>
-   <button class="primary" onclick="resetMonth()">Periode ini</button>
+  <div class="nav-buttons">
+   <button class="btn" onclick="changeMonth(-1)">‹ Sebelumnya</button>
+   <button class="btn" onclick="changeMonth(1)">Berikutnya ›</button>
+   <button class="btn btn-primary" onclick="resetMonth()">Periode ini</button>
   </div>
  </div>
 </section>
 
-<section class="panel">
- <div class="toolbar">
-  <h3>Kalender Jadwal</h3>
-  <button class="primary" onclick="exportCSV()">Unduh Excel (CSV)</button>
+<!-- STATISTIK -->
+<section class="stats-grid">
+
+ <div class="stat-card">
+  <div class="stat-top">
+   <span class="stat-label">Total Karyawan</span>
+   <span class="stat-icon icon-blue">👥</span>
+  </div>
+  <div class="stat-value" id="totalEmployee">6</div>
+  <div class="stat-note">Karyawan terdaftar</div>
+ </div>
+
+ <div class="stat-card">
+  <div class="stat-top">
+   <span class="stat-label">Total Shift Terjadwal</span>
+   <span class="stat-icon icon-green">📋</span>
+  </div>
+  <div class="stat-value" id="totalShift">0</div>
+  <div class="stat-note">Pagi + Siang + Malam</div>
+ </div>
+
+ <div class="stat-card">
+  <div class="stat-top">
+   <span class="stat-label">Total Hari Libur</span>
+   <span class="stat-icon icon-purple">🏖️</span>
+  </div>
+  <div class="stat-value" id="totalLeave">0</div>
+  <div class="stat-note">Kode libur karyawan</div>
+ </div>
+
+ <div class="stat-card">
+  <div class="stat-top">
+   <span class="stat-label">Total Absen</span>
+   <span class="stat-icon icon-orange">📝</span>
+  </div>
+  <div class="stat-value" id="totalAbsent">0</div>
+  <div class="stat-note">Kode absen karyawan</div>
+ </div>
+
+</section>
+
+<!-- KALENDER -->
+<section class="panel table-panel">
+
+ <div class="table-heading">
+  <div>
+   <h3 class="section-title">Kalender Jadwal Karyawan</h3>
+   <p class="section-desc">Klik kode shift untuk mengubah jadwal kerja</p>
+  </div>
+
+  <button class="btn btn-primary" onclick="exportCSV()">
+   ↓ Unduh Excel (CSV)
+  </button>
  </div>
 
  <div class="tablewrap">
   <table id="schedule"></table>
  </div>
 
- <p>
-  <small>
-   Pagi (P) · Siang (S) · Malam (M) · Libur (L) ·
-   Absen (A) · Kosong (-)
-  </small>
- </p>
-
  <div class="legend">
-  <span><i style="background:#fee2e2"></i> Sabtu, Minggu, dan tanggal merah</span>
-  <span><i style="background:#dbeafe"></i> Shift Pagi</span>
-  <span><i style="background:#fef3c7"></i> Shift Siang</span>
-  <span><i style="background:#ede9fe"></i> Shift Malam</span>
+  <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
+  <span class="legend-item"><i class="dot" style="background:#fef3c7"></i>Siang (S)</span>
+  <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
+  <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>Libur (L)</span>
+  <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Absen (A)</span>
+  <span class="legend-item"><i class="dot" style="background:#fff1f2"></i>Tanggal Merah</span>
  </div>
+
 </section>
 
+<!-- REKAP -->
 <section class="panel">
- <h3>Rekap Shift Periode Ini</h3>
- <div class="stats" id="summary"></div>
+ <div>
+  <h3 class="section-title">Rekapitulasi Shift</h3>
+  <p class="section-desc">Ringkasan jadwal setiap karyawan pada periode aktif</p>
+ </div>
+
+ <div class="summary-grid" id="summary"></div>
 </section>
 
 </main>
 
+<footer>
+ WorkShift Dashboard · Employee Schedule Management
+</footer>
+
 <script>
 
-// =====================================
-// DATA KARYAWAN DAN KODE SHIFT
-// =====================================
+// ======================================
+// DATA KARYAWAN
+// ======================================
 
 const employees=[
- "HUDA",
- "SAHRUL",
- "FERDI",
- "MANAP",
- "PAREL",
- "ADIT"
+ "HUDA","SAHRUL","FERDI",
+ "MANAP","PAREL","ADIT"
 ];
 
 const codes=["-","P","S","M","L","A"];
 
-// =====================================
-// DAFTAR TANGGAL MERAH
-// Format: YYYY-MM-DD
-// Tambahkan tanggal libur nasional atau
-// cuti bersama di dalam daftar ini.
-// =====================================
+// ======================================
+// TANGGAL MERAH NASIONAL
+// Format YYYY-MM-DD
+// Perbarui sesuai kalender resmi pemerintah
+// ======================================
 
 const holidays=new Set([
+ "2026-01-01","2026-02-16","2026-02-17",
+ "2026-03-18","2026-03-19","2026-03-20",
+ "2026-03-21","2026-03-22","2026-03-23",
+ "2026-03-24","2026-04-03","2026-04-05",
+ "2026-05-01","2026-05-14","2026-05-15",
+ "2026-05-27","2026-05-28","2026-05-31",
+ "2026-06-01","2026-06-16","2026-08-17",
+ "2026-08-25","2026-12-24","2026-12-25",
 
- // Contoh tanggal merah 2026
- "2026-01-01",
- "2026-02-16",
- "2026-02-17",
- "2026-03-18",
- "2026-03-19",
- "2026-03-20",
- "2026-03-21",
- "2026-03-22",
- "2026-03-23",
- "2026-03-24",
- "2026-04-03",
- "2026-04-05",
- "2026-05-01",
- "2026-05-14",
- "2026-05-15",
- "2026-05-27",
- "2026-05-28",
- "2026-05-31",
- "2026-06-01",
- "2026-06-16",
- "2026-08-17",
- "2026-08-25",
- "2026-12-24",
- "2026-12-25",
-
- // Contoh tanggal merah 2027
- // Periksa dan sesuaikan dengan kalender
- // resmi pemerintah ketika sudah ditetapkan.
- "2027-01-01",
- "2027-01-05",
- "2027-02-05",
- "2027-02-06",
- "2027-03-08",
- "2027-03-09",
- "2027-03-10",
- "2027-03-11",
- "2027-03-12",
- "2027-03-15",
- "2027-03-25",
- "2027-03-26",
- "2027-03-28",
- "2027-05-01",
- "2027-05-06",
- "2027-05-17",
- "2027-05-18",
- "2027-05-19",
- "2027-05-20",
- "2027-06-01",
- "2027-06-06",
- "2027-08-15",
- "2027-08-17",
- "2027-12-24",
- "2027-12-25",
- "2027-12-26"
-
+ "2027-01-01","2027-01-05","2027-02-05",
+ "2027-02-06","2027-03-08","2027-03-09",
+ "2027-03-10","2027-03-11","2027-03-12",
+ "2027-03-15","2027-03-25","2027-03-26",
+ "2027-03-28","2027-05-01","2027-05-06",
+ "2027-05-17","2027-05-18","2027-05-19",
+ "2027-05-20","2027-06-01","2027-06-06",
+ "2027-08-15","2027-08-17","2027-12-24",
+ "2027-12-25","2027-12-26"
 ]);
 
-// =====================================
-// PENGATURAN PERIODE
-// =====================================
+// ======================================
+// PENENTUAN PERIODE
+// ======================================
 
 let today=new Date();
 
@@ -334,20 +640,18 @@ if(today.getDate()<16){
  shown.setMonth(shown.getMonth()-1);
 }
 
-// Penyimpanan lokal browser
 let data=JSON.parse(
  localStorage.getItem("jadwalShift")||"{}"
 );
 
-// =====================================
+// ======================================
 // FUNGSI TANGGAL
-// =====================================
+// ======================================
 
 function dateKey(date){
  const y=date.getFullYear();
  const m=String(date.getMonth()+1).padStart(2,"0");
  const d=String(date.getDate()).padStart(2,"0");
-
  return `${y}-${m}-${d}`;
 }
 
@@ -364,16 +668,10 @@ function formatDate(date){
 }
 
 function isRedDay(date){
- const weekend=
-  date.getDay()===0 ||
-  date.getDay()===6;
-
- return weekend || holidays.has(dateKey(date));
+ return date.getDay()===0 ||
+ date.getDay()===6 ||
+ holidays.has(dateKey(date));
 }
-
-// =====================================
-// PENYIMPANAN DATA
-// =====================================
 
 function save(){
  localStorage.setItem(
@@ -382,7 +680,10 @@ function save(){
  );
 }
 
-// Migrasi data jadwal lama ke format periode baru
+// ======================================
+// MIGRASI DATA JADWAL LAMA
+// ======================================
+
 function migrateOldData(){
 
  let changed=false;
@@ -404,17 +705,13 @@ function migrateOldData(){
 
   const date=new Date(year,month,day);
 
-  if(
-   date.getFullYear()!==year ||
-   date.getMonth()!==month ||
-   date.getDate()!==day
-  )return;
+  if(date.getFullYear()!==year ||
+     date.getMonth()!==month ||
+     date.getDate()!==day)return;
 
   const period=new Date(year,month,1);
 
-  if(day<16){
-   period.setMonth(period.getMonth()-1);
-  }
+  if(day<16)period.setMonth(period.getMonth()-1);
 
   const periodKey=
    period.getFullYear()+"-"+(period.getMonth()+1);
@@ -434,9 +731,9 @@ function migrateOldData(){
  if(changed)save();
 }
 
-// =====================================
-// MEMBUAT TANGGAL 16 SAMPAI 15
-// =====================================
+// ======================================
+// PERIODE TANGGAL 16 SAMPAI 15
+// ======================================
 
 function getPeriodDates(){
 
@@ -444,18 +741,14 @@ function getPeriodDates(){
  const year=shown.getFullYear();
  const month=shown.getMonth();
 
- // Tanggal 16 sampai akhir bulan pertama
  const lastDay=new Date(
-  year,
-  month+1,
-  0
+  year,month+1,0
  ).getDate();
 
  for(let d=16;d<=lastDay;d++){
   dates.push(new Date(year,month,d));
  }
 
- // Tanggal 1 sampai 15 bulan berikutnya
  for(let d=1;d<=15;d++){
   dates.push(new Date(year,month+1,d));
  }
@@ -464,19 +757,16 @@ function getPeriodDates(){
 }
 
 function periodName(){
-
  const dates=getPeriodDates();
 
- return (
-  formatDate(dates[0])+
-  " – "+
-  formatDate(dates[dates.length-1])
- );
+ return formatDate(dates[0])+
+ " – "+
+ formatDate(dates[dates.length-1]);
 }
 
-// =====================================
-// NAVIGASI PERIODE
-// =====================================
+// ======================================
+// NAVIGASI
+// ======================================
 
 function changeMonth(n){
  shown.setMonth(shown.getMonth()+n);
@@ -500,47 +790,40 @@ function resetMonth(){
  render();
 }
 
-// =====================================
-// TAMPILAN KALENDER
-// =====================================
+// ======================================
+// KALENDER
+// ======================================
 
 function render(){
 
  const dates=getPeriodDates();
 
  document.getElementById("monthName").textContent=
-  periodName();
+ periodName();
 
- let html="<tr><th>Karyawan</th>";
+ let html="<thead><tr><th>Karyawan</th>";
 
  dates.forEach(date=>{
 
   const weekday=date.toLocaleDateString(
-   "id-ID",
-   {weekday:"short"}
+   "id-ID",{weekday:"short"}
   );
 
   const month=date.toLocaleDateString(
-   "id-ID",
-   {month:"short"}
+   "id-ID",{month:"short"}
   );
 
-  const redClass=
-   isRedDay(date)?"red-day":"";
-
   html+=`
-   <th class="${redClass}">
+   <th class="${isRedDay(date)?"red-day":""}">
     <span class="datehead">
      ${date.getDate()} ${month}
     </span>
-    <span class="dayhead">
-     ${weekday}
-    </span>
+    <span class="dayhead">${weekday}</span>
    </th>
   `;
  });
 
- html+="</tr>";
+ html+="</tr></thead><tbody>";
 
  employees.forEach((name,i)=>{
 
@@ -553,34 +836,32 @@ function render(){
 
    const v=data[k]||"-";
 
-   const redClass=
-    isRedDay(date)?"red-day":"";
-
    html+=`
-    <td class="${redClass}">
+    <td class="${isRedDay(date)?"red-day":""}">
      <button
       class="shift ${v}"
       onclick="editShift(${i},'${dateKey(date)}')"
-     >
-      ${v}
-     </button>
+      title="Edit jadwal ${name}"
+     >${v}</button>
     </td>
    `;
-
   });
 
   html+="</tr>";
 
  });
 
+ html+="</tbody>";
+
  document.getElementById("schedule").innerHTML=html;
 
  renderSummary(dates);
+ renderStats(dates);
 }
 
-// =====================================
+// ======================================
 // EDIT SHIFT
-// =====================================
+// ======================================
 
 function editShift(i,dateString){
 
@@ -590,7 +871,7 @@ function editShift(i,dateString){
  const current=data[k]||"-";
 
  const answer=prompt(
-  `Jadwal ${employees[i]} tanggal ${dateString}\nIsi: P / S / M / L / A / -`,
+  `Jadwal ${employees[i]} tanggal ${dateString}\n\nP = Pagi\nS = Siang\nM = Malam\nL = Libur\nA = Absen\n- = Kosong`,
   current
  );
 
@@ -599,25 +880,20 @@ function editShift(i,dateString){
  const v=answer.trim().toUpperCase();
 
  if(!codes.includes(v)){
-  alert(
-   "Gunakan kode P, S, M, L, A, atau -."
-  );
+  alert("Gunakan kode P, S, M, L, A, atau -.");
   return;
  }
 
- if(v==="-"){
-  delete data[k];
- }else{
-  data[k]=v;
- }
+ if(v==="-")delete data[k];
+ else data[k]=v;
 
  save();
  render();
 }
 
-// =====================================
-// REKAP SHIFT
-// =====================================
+// ======================================
+// REKAP KARYAWAN
+// ======================================
 
 function renderSummary(dates){
 
@@ -625,39 +901,31 @@ function renderSummary(dates){
 
  employees.forEach((name,i)=>{
 
-  let counts={
-   P:0,
-   S:0,
-   M:0,
-   L:0,
-   A:0
-  };
+  let c={P:0,S:0,M:0,L:0,A:0};
 
   dates.forEach(date=>{
 
-   const v=
-    data[`${key()}-${i}-${dateKey(date)}`];
+   const v=data[
+    `${key()}-${i}-${dateKey(date)}`
+   ];
 
-   if(counts[v]!==undefined){
-    counts[v]++;
-   }
+   if(c[v]!==undefined)c[v]++;
 
   });
 
-  const total=
-   counts.P+counts.S+counts.M;
+  const total=c.P+c.S+c.M;
 
   html+=`
-   <div class="stat">
-    <b>${name}</b>
-    <strong>${total}</strong>
-    <small>
-     P ${counts.P} ·
-     S ${counts.S} ·
-     M ${counts.M} ·
-     L ${counts.L} ·
-     A ${counts.A}
-    </small>
+   <div class="summary-card">
+    <div class="summary-name">${name}</div>
+    <div class="summary-total">${total}</div>
+    <div class="summary-detail">
+     Pagi: ${c.P}<br>
+     Siang: ${c.S}<br>
+     Malam: ${c.M}<br>
+     Libur: ${c.L}<br>
+     Absen: ${c.A}
+    </div>
    </div>
   `;
 
@@ -666,19 +934,55 @@ function renderSummary(dates){
  document.getElementById("summary").innerHTML=html;
 }
 
-// =====================================
-// DOWNLOAD EXCEL / CSV
-// =====================================
+// ======================================
+// STATISTIK DASHBOARD
+// ======================================
+
+function renderStats(dates){
+
+ let totalShift=0;
+ let totalLeave=0;
+ let totalAbsent=0;
+
+ employees.forEach((name,i)=>{
+
+  dates.forEach(date=>{
+
+   const v=data[
+    `${key()}-${i}-${dateKey(date)}`
+   ];
+
+   if(["P","S","M"].includes(v))totalShift++;
+   if(v==="L")totalLeave++;
+   if(v==="A")totalAbsent++;
+
+  });
+
+ });
+
+ document.getElementById("totalEmployee").textContent=
+ employees.length;
+
+ document.getElementById("totalShift").textContent=
+ totalShift;
+
+ document.getElementById("totalLeave").textContent=
+ totalLeave;
+
+ document.getElementById("totalAbsent").textContent=
+ totalAbsent;
+}
+
+// ======================================
+// EXPORT CSV
+// ======================================
 
 function exportCSV(){
 
  const dates=getPeriodDates();
 
  let rows=[
-  [
-   "Karyawan",
-   ...dates.map(date=>dateKey(date))
-  ]
+  ["Karyawan",...dates.map(date=>dateKey(date))]
  ];
 
  employees.forEach((name,i)=>{
@@ -695,7 +999,7 @@ function exportCSV(){
  });
 
  const csv="\uFEFF"+
-  rows.map(r=>r.join(";")).join("\n");
+ rows.map(r=>r.join(";")).join("\n");
 
  const blob=new Blob(
   [csv],
@@ -703,13 +1007,10 @@ function exportCSV(){
  );
 
  const url=URL.createObjectURL(blob);
-
  const a=document.createElement("a");
 
  a.href=url;
- a.download=
-  "jadwal-shift-"+key()+"-periode-16-15.csv";
-
+ a.download="WorkShift-"+key()+"-16-15.csv";
  a.click();
 
  setTimeout(()=>{
@@ -717,13 +1018,14 @@ function exportCSV(){
  },1000);
 }
 
-// =====================================
+// ======================================
 // JALANKAN APLIKASI
-// =====================================
+// ======================================
 
 migrateOldData();
 render();
 
 </script>
+
 </body>
 </html>
