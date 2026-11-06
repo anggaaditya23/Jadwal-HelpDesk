@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WorkShift - Jadwal HelpDesk</title>
+<title>WorkShift Pro - Jadwal HelpDesk</title>
 
 <style>
 :root{
@@ -14,6 +14,9 @@
   --border:#e2e8f0;
   --text:#1e293b;
   --muted:#64748b;
+  --green:#15803d;
+  --red:#b91c1c;
+  --orange:#c2410c;
 }
 *{box-sizing:border-box}
 body{
@@ -51,6 +54,11 @@ header p{margin:7px 0 0;color:#cbd5e1;font-size:13px}
   gap:12px;
   margin-bottom:18px;
 }
+.toolbar-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 button{
   border:0;
   border-radius:9px;
@@ -59,13 +67,15 @@ button{
   font-weight:600;
   font-size:13px;
 }
+button:hover{opacity:.88}
+button:disabled{opacity:.45;cursor:not-allowed}
 .btn-primary{background:var(--blue);color:white}
 .btn-light{background:white;color:var(--text);border:1px solid var(--border)}
-button:hover{opacity:.88}
-.period{
-  font-size:18px;
-  font-weight:700;
-}
+.btn-success{background:#15803d;color:white}
+.btn-danger{background:#dc2626;color:white}
+.btn-warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+.btn-small{padding:7px 10px;font-size:11px}
+.period{font-size:18px;font-weight:700}
 .panel{
   background:white;
   border:1px solid var(--border);
@@ -75,39 +85,75 @@ button:hover{opacity:.88}
   box-shadow:0 3px 10px rgba(15,23,42,.03);
 }
 .panel h2{font-size:17px;margin:0 0 15px}
+.panel h3{font-size:14px;margin:0 0 12px}
 .note{
   color:var(--muted);
   font-size:12px;
   line-height:1.6;
 }
-.table-wrap{width:100%;overflow:visible}
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:700;
+}
+.badge-pending{background:#fef3c7;color:#92400e}
+.badge-approved{background:#dcfce7;color:#166534}
+.badge-rejected{background:#fee2e2;color:#991b1b}
+.badge-locked{background:#e2e8f0;color:#334155}
+.badge-open{background:#dbeafe;color:#1d4ed8}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.tab-button{
+  background:white;
+  color:#475569;
+  border:1px solid var(--border);
+}
+.tab-button.active{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+.table-wrap{width:100%;overflow-x:auto}
 table{
   width:100%;
-  table-layout:fixed;
   border-collapse:collapse;
 }
 th,td{
   border:1px solid var(--border);
-  padding:7px 2px;
+  padding:8px;
   text-align:center;
-  font-size:11px;
+  font-size:12px;
 }
 th{
   background:#f1f5f9;
   color:#334155;
   font-weight:700;
 }
-th:first-child,td:first-child{
+.schedule-table{
+  table-layout:fixed;
+  min-width:1000px;
+}
+.schedule-table th,.schedule-table td{
+  padding:7px 2px;
+  font-size:11px;
+}
+.schedule-table th:first-child,
+.schedule-table td:first-child{
   width:85px;
   background:#f8fafc;
   font-weight:700;
-  overflow:hidden;
 }
 .date-head{font-size:10px}
-.weekend{
-  background:#fff1f2!important;
-  color:#be123c!important;
-}
 .holiday{
   background:#fee2e2!important;
   color:#b91c1c!important;
@@ -126,13 +172,9 @@ th:first-child,td:first-child{
 .P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
 .S{background:#fef3c7;color:#92400e;border-color:#fde68a}
 .M{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
-.L,.R{
-  background:#dcfce7;
-  color:#166534;
-  border-color:#bbf7d0;
-}
+.L,.R{background:#dcfce7;color:#166534;border-color:#bbf7d0}
 .C{background:#ffedd5;color:#9a3412;border-color:#fed7aa}
-
+.shift.disabled{cursor:not-allowed;opacity:.7}
 .legend{
   display:flex;
   flex-wrap:wrap;
@@ -142,12 +184,8 @@ th:first-child,td:first-child{
   color:#475569;
 }
 .legend-item{display:flex;align-items:center;gap:6px}
-.dot{
-  width:12px;
-  height:12px;
-  border-radius:4px;
-  display:inline-block;
-}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+
 .summary-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -160,14 +198,61 @@ th:first-child,td:first-child{
   background:#fff;
 }
 .summary-card h3{font-size:14px;margin:0 0 9px}
-.summary-card p{
-  margin:4px 0;
-  font-size:12px;
-  color:#475569;
-}
+.summary-card p{margin:5px 0;font-size:12px;color:#475569}
 
-/* Kalender HP */
-.mobile-calendar{display:none}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;color:#475569}
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  font:13px Arial,sans-serif;
+  background:white;
+  color:var(--text);
+}
+textarea{min-height:75px;resize:vertical}
+input:focus,select:focus,textarea:focus{
+  outline:2px solid #bfdbfe;
+  border-color:var(--blue);
+}
+.form-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.request-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.request-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.request-info{font-size:12px;line-height:1.7}
+.request-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  border:1px dashed var(--border);
+  border-radius:10px;
+}
 .employee-mobile-card{
   border:1px solid var(--border);
   border-radius:11px;
@@ -193,30 +278,32 @@ th:first-child,td:first-child{
   text-align:center;
   background:#f8fafc;
 }
-.mobile-day.weekend{
-  background:#fff1f2!important;
-}
-.mobile-day.holiday{
-  background:#fee2e2!important;
-  border-color:#fecaca;
-}
+.mobile-day.holiday{background:#fee2e2;border-color:#fecaca}
 .mobile-day .day-number{
   display:block;
   font-size:10px;
   margin-bottom:4px;
   color:#64748b;
 }
-.mobile-day.weekend .day-number,
-.mobile-day.holiday .day-number{
-  color:#b91c1c!important;
-  font-weight:700;
-}
+.mobile-day.holiday .day-number{color:#b91c1c;font-weight:700}
 .mobile-day .shift{
   min-width:0;
   width:100%;
   padding:5px 0;
   font-size:11px;
 }
+.mobile-calendar{display:none}
+.alert{
+  padding:11px 13px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:12px;
+}
+.alert-info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.alert-warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+.alert-success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.setting-table input{max-width:85px;text-align:center}
 footer{
   text-align:center;
   color:#94a3b8;
@@ -224,7 +311,6 @@ footer{
   padding:15px;
 }
 
-/* Tablet dan HP */
 @media(max-width:800px){
   .desktop-calendar{display:none}
   .mobile-calendar{display:block}
@@ -235,23 +321,18 @@ footer{
 }
 @media(max-width:500px){
   .summary-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:auto}
   .container{padding:0 9px 20px}
   .panel{padding:11px}
   .period{font-size:15px}
   .toolbar{align-items:flex-start}
-  .toolbar-buttons{
-    width:100%;
-    display:flex;
-    gap:6px;
-  }
-  .toolbar-buttons button{
-    flex:1;
-    padding:9px 5px;
-    font-size:11px;
-  }
+  .toolbar-buttons{width:100%}
+  .toolbar-buttons button{flex:1;padding:9px 5px;font-size:11px}
   header h1{font-size:22px}
   .mobile-days{gap:4px}
   .mobile-day{padding:4px 1px}
+  .request-card{align-items:flex-start}
 }
 </style>
 </head>
@@ -261,8 +342,8 @@ footer{
 <header>
   <div class="header-inner">
     <div>
-      <h1>WorkShift</h1>
-      <p>Dashboard Jadwal Kerja HelpDesk</p>
+      <h1>WorkShift Pro</h1>
+      <p>Dashboard Manajemen Jadwal HelpDesk</p>
     </div>
     <div style="font-size:12px;color:#cbd5e1">
       STAFF SHIFT MANAGEMENT
@@ -276,118 +357,241 @@ footer{
     <div>
       <div class="period" id="periodTitle">Jadwal Shift</div>
       <div class="note">Periode jadwal tanggal 16 sampai 15 bulan berikutnya</div>
+      <div id="lockStatus" style="margin-top:7px"></div>
     </div>
-    <div class="toolbar-buttons" style="display:flex;gap:8px;flex-wrap:wrap">
+    <div class="toolbar-buttons">
       <button class="btn-light" onclick="changeMonth(-1)">‹ Sebelumnya</button>
       <button class="btn-light" onclick="changeMonth(1)">Berikutnya ›</button>
-      <button class="btn-primary" onclick="exportCSV()">Export CSV</button>
     </div>
   </div>
 
-  <section class="panel">
-    <h2>Kalender Jadwal Karyawan</h2>
-    <div class="note" style="margin-bottom:12px">
-      Klik kode shift untuk mengubah jadwal. Perubahan tersimpan otomatis di browser ini.
-    </div>
+  <nav class="tabs">
+    <button class="tab-button active" onclick="showTab('jadwal',this)">📅 Jadwal</button>
+    <button class="tab-button" onclick="showTab('request',this)">📝 Request Libur</button>
+    <button class="tab-button" onclick="showTab('pengaturan',this)">⚙️ Pengaturan</button>
+  </nav>
 
-    <div class="table-wrap desktop-calendar">
-      <table id="scheduleTable"></table>
-    </div>
+  <!-- TAB JADWAL -->
+  <section class="tab-content active" id="tab-jadwal">
 
-    <div class="mobile-calendar" id="mobileCalendar"></div>
+    <section class="panel">
+      <h2>Kontrol Jadwal</h2>
+      <div class="note" style="margin-bottom:12px">
+        Generate jadwal akan menyalin pola 30 hari dari periode sebelumnya.
+        Admin tetap dapat mengedit hasilnya secara manual.
+      </div>
 
-    <div class="legend">
-      <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
-      <span class="legend-item"><i class="dot" style="background:#fef3c7"></i>Siang (S)</span>
-      <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
-      <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>OFF (L / R)</span>
-      <span class="legend-item"><i class="dot" style="background:#ffedd5"></i>Cuti (C)</span>
-      <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Tanggal Merah</span>
-    </div>
+      <div class="toolbar-buttons">
+        <button class="btn-primary" onclick="generateNextPeriod()">⚡ Generate Jadwal Periode Berikutnya</button>
+        <button class="btn-success" onclick="toggleLock()">🔒 Kunci / Buka Jadwal</button>
+        <button class="btn-light" onclick="exportCSV()">Export CSV</button>
+      </div>
+
+      <div id="generateMessage" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Kalender Jadwal Karyawan</h2>
+      <div class="note" style="margin-bottom:12px">
+        Klik kode shift untuk mengubah jadwal. Perubahan tersimpan otomatis di browser ini.
+      </div>
+
+      <div class="table-wrap desktop-calendar">
+        <table class="schedule-table" id="scheduleTable"></table>
+      </div>
+
+      <div class="mobile-calendar" id="mobileCalendar"></div>
+
+      <div class="legend">
+        <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
+        <span class="legend-item"><i class="dot" style="background:#fef3c7"></i>Siang (S)</span>
+        <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
+        <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>OFF (L / R)</span>
+        <span class="legend-item"><i class="dot" style="background:#ffedd5"></i>Cuti (C)</span>
+        <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Tanggal Merah</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Rekapitulasi Jadwal Karyawan</h2>
+      <div class="summary-grid" id="summaryGrid"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Catatan Jadwal</h2>
+      <p class="note">
+        P = Shift Pagi | S = Shift Siang | M = Shift Malam |
+        L = Libur | R = OFF / Rest | C = Cuti
+      </p>
+      <p class="note">
+        Warna merah menandakan hari Sabtu, Minggu, dan libur nasional.
+        Data jadwal tersimpan pada browser/perangkat yang digunakan.
+      </p>
+    </section>
   </section>
 
-  <section class="panel">
-    <h2>Rekapitulasi Jadwal Karyawan</h2>
-    <div class="summary-grid" id="summaryGrid"></div>
+  <!-- TAB REQUEST LIBUR -->
+  <section class="tab-content" id="tab-request">
+
+    <section class="panel">
+      <h2>Form Request Libur Karyawan</h2>
+      <div class="alert alert-info">
+        Pengajuan akan masuk ke daftar admin dengan status Menunggu.
+        Jadwal tidak berubah sebelum admin menyetujui pengajuan.
+      </div>
+
+      <form id="requestForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="requestEmployee">Nama Karyawan</label>
+            <select id="requestEmployee" required>
+              <option value="">Pilih karyawan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="requestDate">Tanggal Request Libur</label>
+            <input type="date" id="requestDate" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="requestReason">Alasan Request</label>
+            <textarea id="requestReason" placeholder="Tuliskan alasan pengajuan libur..." required></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">Kirim Request</button>
+          <button class="btn-light" type="reset">Reset Form</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Daftar Pengajuan Libur</h2>
+      <div id="requestStats" class="note" style="margin-bottom:12px"></div>
+      <div id="requestList" class="request-list"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Monitoring Request per Tanggal</h2>
+      <div class="note" style="margin-bottom:12px">
+        Menampilkan jumlah pengajuan pada tanggal yang sama untuk membantu admin mengecek potensi kekurangan personel.
+      </div>
+      <div class="table-wrap">
+        <table id="requestConflictTable"></table>
+      </div>
+    </section>
+
   </section>
 
-  <section class="panel">
-    <h2>Keterangan</h2>
-    <p class="note">
-      P = Shift Pagi &nbsp; | &nbsp;
-      S = Shift Siang &nbsp; | &nbsp;
-      M = Shift Malam &nbsp; | &nbsp;
-      L = Libur &nbsp; | &nbsp;
-      R = OFF / Rest &nbsp; | &nbsp;
-      C = Cuti
-    </p>
-    <p class="note">
-      Warna merah menandakan hari Sabtu, Minggu, dan libur nasional.
-      Data jadwal tersimpan pada browser/perangkat yang digunakan.
-    </p>
+  <!-- TAB PENGATURAN -->
+  <section class="tab-content" id="tab-pengaturan">
+
+    <section class="panel">
+      <h2>Pengaturan Target OFF Karyawan</h2>
+      <div class="alert alert-warning">
+        Target OFF di bawah ini merupakan acuan administrasi sesuai aturan kantor.
+        Silakan ubah sesuai ketentuan yang berlaku. Generator menyalin pola periode sebelumnya dan tidak memaksakan jumlah OFF.
+      </div>
+
+      <div class="table-wrap">
+        <table class="setting-table">
+          <thead>
+            <tr>
+              <th>Nama Karyawan</th>
+              <th>Target OFF / Periode</th>
+            </tr>
+          </thead>
+          <tbody id="offSettings"></tbody>
+        </table>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveOffSettings()">Simpan Pengaturan</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Informasi Sistem</h2>
+      <p class="note">
+        • Pola shift ditentukan manual oleh admin.<br>
+        • Generate jadwal menyalin urutan 30 hari dari periode sebelumnya.<br>
+        • Request yang disetujui akan mengubah jadwal tanggal tersebut menjadi L.<br>
+        • Jika tanggal request sudah memiliki jadwal, persetujuan akan mengganti kode shift menjadi L.<br>
+        • Jadwal yang dikunci tidak dapat diedit atau diubah melalui persetujuan request.<br>
+        • Data disimpan pada browser yang sedang digunakan.
+      </p>
+    </section>
+
   </section>
 
 </main>
 
-<footer>WorkShift Dashboard · Jadwal HelpDesk</footer>
+<footer>WorkShift Pro · HelpDesk Shift Management</footer>
 
 <script>
-const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
+/* =========================
+   KONFIGURASI UTAMA
+========================= */
 
-/* Kode shift tanpa Alpha */
+const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
 const codes=["-","P","S","M","L","R","C"];
 
-/* Daftar hari libur nasional 2026 dan 2027 */
 const holidays=new Set([
-
-  // Tahun 2026
-  "2026-01-01",
-  "2026-01-16",
-  "2026-02-17",
-  "2026-03-19",
-  "2026-03-21",
-  "2026-03-22",
-  "2026-04-03",
-  "2026-04-05",
-  "2026-05-01",
-  "2026-05-14",
-  "2026-05-27",
-  "2026-05-31",
-  "2026-06-01",
-  "2026-06-16",
-  "2026-08-17",
-  "2026-08-25",
+  "2026-01-01","2026-01-16","2026-02-17","2026-03-19",
+  "2026-03-21","2026-03-22","2026-04-03","2026-04-05",
+  "2026-05-01","2026-05-14","2026-05-27","2026-05-31",
+  "2026-06-01","2026-06-16","2026-08-17","2026-08-25",
   "2026-12-25",
 
-  // Tahun 2027
-  "2027-01-01",
-  "2027-01-05",
-  "2027-02-06",
-  "2027-03-08",
-  "2027-03-10",
-  "2027-03-11",
-  "2027-03-26",
-  "2027-03-28",
-  "2027-05-01",
-  "2027-05-06",
-  "2027-05-17",
-  "2027-05-20",
-  "2027-06-01",
-  "2027-06-06",
-  "2027-08-15",
-  "2027-08-17",
-  "2027-12-25",
-  "2027-12-26"
+  "2027-01-01","2027-01-05","2027-02-06","2027-03-08",
+  "2027-03-10","2027-03-11","2027-03-26","2027-03-28",
+  "2027-05-01","2027-05-06","2027-05-17","2027-05-20",
+  "2027-06-01","2027-06-06","2027-08-15","2027-08-17",
+  "2027-12-25","2027-12-26"
 ]);
 
+/* Periode awal: 16 November - 15 Desember 2026 */
 let shown=new Date(2026,10,1);
-let data={};
 
-try{
-  data=JSON.parse(localStorage.getItem("jadwalShift")||"{}");
-}catch(e){
-  data={};
+let data=readStorage("jadwalShift",{});
+let requests=readStorage("workshiftRequests",[]);
+let locks=readStorage("workshiftLocks",{});
+let offTargets=readStorage("workshiftOffTargets",{
+  HUDA:8,
+  SAHRUL:8,
+  FERDI:8,
+  MANAP:8,
+  PAREL:8,
+  ADIT:8
+});
+
+function readStorage(key,fallback){
+  try{
+    const value=localStorage.getItem(key);
+    return value?JSON.parse(value):fallback;
+  }catch(e){
+    return fallback;
+  }
 }
+
+function saveData(){
+  localStorage.setItem("jadwalShift",JSON.stringify(data));
+}
+function saveRequests(){
+  localStorage.setItem("workshiftRequests",JSON.stringify(requests));
+}
+function saveLocks(){
+  localStorage.setItem("workshiftLocks",JSON.stringify(locks));
+}
+function saveTargets(){
+  localStorage.setItem("workshiftOffTargets",JSON.stringify(offTargets));
+}
+
+/* =========================
+   JADWAL AWAL
+========================= */
 
 const initialSchedule={
   HUDA:["S","P","S","S","P","R","L","S","S","P","P","S","R","R","S","S","P","L","P","P","P","L","C","C","S","P","R","R","S","P"],
@@ -398,8 +602,8 @@ const initialSchedule={
   ADIT:["P","P","P","C","C","R","R","P","S","S","S","R","P","P","S","L","L","P","P","P","L","P","P","P","S","S","R","L","P","P"]
 };
 
-function saveData(){
-  localStorage.setItem("jadwalShift",JSON.stringify(data));
+function periodId(date=shown){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}`;
 }
 
 function dateKey(date){
@@ -409,37 +613,59 @@ function dateKey(date){
   return `${y}-${m}-${d}`;
 }
 
-function isWeekend(date){
-  return date.getDay()===0||date.getDay()===6;
-}
-
-function isHoliday(date){
-  return holidays.has(dateKey(date));
-}
-
-function isRedDate(date){
-  return isWeekend(date)||isHoliday(date);
-}
-
-function getDates(){
+function getDates(date=shown){
   const dates=[];
   for(let i=0;i<30;i++){
-    dates.push(new Date(shown.getFullYear(),shown.getMonth(),16+i));
+    dates.push(new Date(date.getFullYear(),date.getMonth(),16+i));
   }
   return dates;
 }
 
-function inputInitialSchedule(){
-  const dates=getDates();
+function isWeekend(date){
+  return date.getDay()===0||date.getDay()===6;
+}
+function isHoliday(date){
+  return holidays.has(dateKey(date));
+}
+function isRedDate(date){
+  return isWeekend(date)||isHoliday(date);
+}
+function isLocked(){
+  return locks[periodId()]===true;
+}
+function formatDate(dateString){
+  const d=new Date(dateString+"T00:00:00");
+  return d.toLocaleDateString("id-ID",{
+    day:"numeric",month:"long",year:"numeric"
+  });
+}
+function showTab(name,button){
+  document.querySelectorAll(".tab-content").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".tab-button").forEach(el=>el.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  button.classList.add("active");
+}
 
+/* =========================
+   DATA JADWAL AWAL
+========================= */
+
+function inputInitialSchedule(){
   if(shown.getFullYear()!==2026 || shown.getMonth()!==10)return;
 
+  const dates=getDates();
+
   employees.forEach(employee=>{
-    dates.forEach((date,dayIndex)=>{
+    dates.forEach((date,index)=>{
       const key=employee+"_"+dateKey(date);
 
       if(data[key]===undefined){
-        data[key]=initialSchedule[employee][dayIndex]||"-";
+        data[key]=initialSchedule[employee][index]||"-";
+      }
+
+      /* Menghapus kode Alpha dari data lama */
+      if(data[key]==="A"){
+        data[key]="-";
       }
     });
   });
@@ -447,18 +673,31 @@ function inputInitialSchedule(){
   saveData();
 }
 
+/* =========================
+   NAVIGASI PERIODE
+========================= */
+
 function changeMonth(direction){
-  shown=new Date(shown.getFullYear(),shown.getMonth()+direction,1);
+  shown=new Date(shown.getFullYear()+0,shown.getMonth()+direction,1);
   render();
 }
 
+/* =========================
+   EDIT SHIFT
+========================= */
+
 function editShift(employee,date){
+  if(isLocked()){
+    alert("Jadwal periode ini sudah dikunci. Buka kunci terlebih dahulu.");
+    return;
+  }
+
   const key=employee+"_"+dateKey(date);
   const current=data[key]||"-";
 
   const answer=prompt(
     "Ubah jadwal "+employee+" tanggal "+dateKey(date)+"\n\n"+
-    "P = Pagi\nS = Siang\nM = Malam\nL = OFF\nR = OFF\nC = Cuti\n- = Kosong\n\n"+
+    "P = Pagi\nS = Siang\nM = Malam\nL = Libur\nR = OFF\nC = Cuti\n- = Kosong\n\n"+
     "Masukkan kode jadwal:",
     current
   );
@@ -468,7 +707,7 @@ function editShift(employee,date){
   const value=answer.trim().toUpperCase();
 
   if(!codes.includes(value)){
-    alert("Kode tidak valid. Gunakan: P, S, M, L, R, C, atau -");
+    alert("Kode tidak valid. Gunakan P, S, M, L, R, C, atau -");
     return;
   }
 
@@ -477,14 +716,96 @@ function editShift(employee,date){
   render();
 }
 
+/* =========================
+   GENERATE JADWAL
+========================= */
+
+function generateNextPeriod(){
+  const currentDates=getDates();
+  const nextPeriod=new Date(shown.getFullYear(),shown.getMonth()+1,1);
+  const nextDates=getDates(nextPeriod);
+  const nextId=periodId(nextPeriod);
+
+  if(locks[nextId]){
+    alert("Periode berikutnya sudah dikunci. Buka kunci terlebih dahulu.");
+    return;
+  }
+
+  const alreadyExists=nextDates.some(date=>
+    employees.some(employee=>
+      data[employee+"_"+dateKey(date)]!==undefined
+    )
+  );
+
+  let message=
+    "Sistem akan menyalin pola jadwal periode saat ini ke periode berikutnya.\n\n"+
+    "Periode tujuan: "+
+    formatDate(dateKey(nextDates[0]))+" sampai "+
+    formatDate(dateKey(nextDates[29]))+
+    "\n\nJadwal yang sudah ada pada periode tujuan akan ditimpa.";
+
+  if(alreadyExists){
+    message+="\n\nPERHATIAN: Jadwal periode tujuan sudah memiliki data.";
+  }
+
+  if(!confirm(message))return;
+
+  employees.forEach(employee=>{
+    currentDates.forEach((date,index)=>{
+      const nextDate=nextDates[index];
+      const oldKey=employee+"_"+dateKey(date);
+      const newKey=employee+"_"+dateKey(nextDate);
+
+      data[newKey]=data[oldKey]||"-";
+    });
+  });
+
+  /* Terapkan request libur yang sudah disetujui untuk periode tujuan */
+  requests.forEach(req=>{
+    if(req.status==="approved" && nextDates.some(d=>dateKey(d)===req.date)){
+      data[req.employee+"_"+req.date]="L";
+    }
+  });
+
+  saveData();
+
+  document.getElementById("generateMessage").innerHTML=
+    '<div class="alert alert-success">Jadwal periode berikutnya berhasil dibuat. Silakan cek dan sesuaikan secara manual.</div>';
+
+  shown=nextPeriod;
+  render();
+}
+
+/* =========================
+   KUNCI JADWAL
+========================= */
+
+function toggleLock(){
+  const id=periodId();
+
+  if(locks[id]){
+    if(!confirm("Buka kunci jadwal periode ini?"))return;
+    locks[id]=false;
+  }else{
+    if(!confirm("Kunci jadwal periode ini? Jadwal tidak dapat diedit dan request yang disetujui tidak akan mengubah jadwal."))return;
+    locks[id]=true;
+  }
+
+  saveLocks();
+  render();
+}
+
+/* =========================
+   RENDER KALENDER
+========================= */
+
 function renderTable(){
   const dates=getDates();
+  const locked=isLocked();
   let html="<thead><tr><th>Karyawan</th>";
 
   dates.forEach(date=>{
-    const red=isRedDate(date);
-
-    html+=`<th class="date-head ${red?"holiday":""}">
+    html+=`<th class="date-head ${isRedDate(date)?"holiday":""}">
       ${date.getDate()}<br>
       <small>${["Min","Sen","Sel","Rab","Kam","Jum","Sab"][date.getDay()]}</small>
     </th>`;
@@ -497,11 +818,13 @@ function renderTable(){
 
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
-      const value=data[key]||"-";
-      const red=isRedDate(date);
+      let value=data[key]||"-";
 
-      html+=`<td class="${red?"holiday":""}">
-        <span class="shift ${value}" onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">${value}</span>
+      if(value==="A")value="-";
+
+      html+=`<td class="${isRedDate(date)?"holiday":""}">
+        <span class="shift ${value} ${locked?"disabled":""}"
+          onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">${value}</span>
       </td>`;
     });
 
@@ -514,6 +837,7 @@ function renderTable(){
 
 function renderMobileCalendar(){
   const dates=getDates();
+  const locked=isLocked();
   let html="";
 
   employees.forEach(employee=>{
@@ -525,13 +849,13 @@ function renderMobileCalendar(){
 
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
-      const value=data[key]||"-";
-      const red=isRedDate(date);
+      let value=data[key]||"-";
+      if(value==="A")value="-";
 
       html+=`
-        <div class="mobile-day ${red?"holiday":""}">
+        <div class="mobile-day ${isRedDate(date)?"holiday":""}">
           <span class="day-number">${date.getDate()}</span>
-          <span class="shift ${value}"
+          <span class="shift ${value} ${locked?"disabled":""}"
             onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">
             ${value}
           </span>
@@ -539,14 +863,15 @@ function renderMobileCalendar(){
       `;
     });
 
-    html+=`
-        </div>
-      </div>
-    `;
+    html+="</div></div>";
   });
 
   document.getElementById("mobileCalendar").innerHTML=html;
 }
+
+/* =========================
+   REKAP JADWAL
+========================= */
 
 function renderSummary(){
   const dates=getDates();
@@ -556,13 +881,19 @@ function renderSummary(){
     const c={P:0,S:0,M:0,L:0,R:0,C:0,blank:0};
 
     dates.forEach(date=>{
-      const value=data[employee+"_"+dateKey(date)]||"-";
+      let value=data[employee+"_"+dateKey(date)]||"-";
+      if(value==="A")value="-";
+
       if(c[value]!==undefined)c[value]++;
       else c.blank++;
     });
 
     const total=c.P+c.S+c.M;
     const totalOff=c.L+c.R;
+    const target=Number(offTargets[employee]??8);
+    const offStatus=totalOff===target
+      ? "Sesuai target"
+      : (totalOff<target?"Kurang "+(target-totalOff):"Lebih "+(totalOff-target));
 
     html+=`
       <div class="summary-card">
@@ -572,6 +903,8 @@ function renderSummary(){
         <p>Shift Malam (M): <b>${c.M}</b></p>
         <p>Total Hari Kerja: <b>${total}</b></p>
         <p>OFF (L + R): <b>${totalOff}</b></p>
+        <p>Target OFF: <b>${target}</b></p>
+        <p>Status OFF: <b>${offStatus}</b></p>
         <p>Cuti (C): <b>${c.C}</b></p>
         <p>Kosong (-): <b>${c.blank}</b></p>
       </div>
@@ -580,6 +913,276 @@ function renderSummary(){
 
   document.getElementById("summaryGrid").innerHTML=html;
 }
+
+/* =========================
+   REQUEST LIBUR
+========================= */
+
+function setupRequestForm(){
+  const select=document.getElementById("requestEmployee");
+
+  select.innerHTML='<option value="">Pilih karyawan</option>'+
+    employees.map(name=>`<option value="${name}">${name}</option>`).join("");
+
+  const dates=getDates();
+  document.getElementById("requestDate").min=dateKey(dates[0]);
+  document.getElementById("requestDate").max=dateKey(dates[29]);
+}
+
+document.getElementById("requestForm").addEventListener("submit",function(e){
+  e.preventDefault();
+
+  const employee=document.getElementById("requestEmployee").value;
+  const date=document.getElementById("requestDate").value;
+  const reason=document.getElementById("requestReason").value.trim();
+
+  if(!employee||!date||!reason){
+    alert("Lengkapi semua data request.");
+    return;
+  }
+
+  const dates=getDates();
+  if(!dates.some(d=>dateKey(d)===date)){
+    alert("Tanggal request harus berada dalam periode jadwal yang sedang dibuka.");
+    return;
+  }
+
+  if(isLocked()){
+    alert("Periode ini sudah dikunci. Request baru tidak dapat ditambahkan.");
+    return;
+  }
+
+  const duplicate=requests.some(r=>
+    r.employee===employee &&
+    r.date===date &&
+    r.status!=="rejected"
+  );
+
+  if(duplicate){
+    alert("Karyawan tersebut sudah memiliki request aktif pada tanggal yang sama.");
+    return;
+  }
+
+  requests.unshift({
+    id:Date.now().toString(),
+    employee,
+    date,
+    reason,
+    status:"pending",
+    createdAt:new Date().toISOString()
+  });
+
+  saveRequests();
+  this.reset();
+  setupRequestForm();
+  renderRequests();
+
+  alert("Request libur berhasil dikirim.");
+});
+
+function approveRequest(id){
+  const req=requests.find(r=>r.id===id);
+  if(!req)return;
+
+  const reqDate=new Date(req.date+"T00:00:00");
+  const requestPeriod=new Date(reqDate.getFullYear(),reqDate.getMonth(),1);
+
+  /* Tanggal 1-15 termasuk periode yang dimulai tanggal 16 bulan sebelumnya */
+  if(reqDate.getDate()<=15){
+    requestPeriod.setMonth(requestPeriod.getMonth()-1);
+  }
+
+  if(locks[periodId(requestPeriod)]){
+    alert("Jadwal periode request sudah dikunci. Buka kunci terlebih dahulu.");
+    return;
+  }
+
+  const key=req.employee+"_"+req.date;
+  const oldValue=data[key]||"-";
+
+  if(!confirm(
+    "Setujui request libur "+req.employee+
+    " tanggal "+formatDate(req.date)+
+    "?\n\nJadwal saat ini: "+oldValue+
+    "\nJadwal akan diubah menjadi L (Libur)."
+  ))return;
+
+  req.status="approved";
+  req.approvedAt=new Date().toISOString();
+
+  data[key]="L";
+
+  saveData();
+  saveRequests();
+  render();
+  renderRequests();
+
+  alert("Request disetujui dan jadwal berhasil diperbarui.");
+}
+
+function rejectRequest(id){
+  const req=requests.find(r=>r.id===id);
+  if(!req)return;
+
+  if(!confirm("Tolak request libur "+req.employee+" tanggal "+formatDate(req.date)+"?"))return;
+
+  req.status="rejected";
+  req.rejectedAt=new Date().toISOString();
+
+  saveRequests();
+  renderRequests();
+}
+
+function deleteRequest(id){
+  const req=requests.find(r=>r.id===id);
+  if(!req)return;
+
+  if(!confirm("Hapus pengajuan ini dari daftar?"))return;
+
+  requests=requests.filter(r=>r.id!==id);
+  saveRequests();
+  renderRequests();
+}
+
+function renderRequests(){
+  const list=document.getElementById("requestList");
+
+  const pending=requests.filter(r=>r.status==="pending").length;
+  const approved=requests.filter(r=>r.status==="approved").length;
+  const rejected=requests.filter(r=>r.status==="rejected").length;
+
+  document.getElementById("requestStats").innerHTML=
+    `Menunggu: <b>${pending}</b> &nbsp; | &nbsp; Disetujui: <b>${approved}</b> &nbsp; | &nbsp; Ditolak: <b>${rejected}</b>`;
+
+  const visible=requests.filter(r=>{
+    const d=new Date(r.date+"T00:00:00");
+    const periodStart=new Date(shown.getFullYear(),shown.getMonth(),16);
+    const periodEnd=new Date(shown.getFullYear(),shown.getMonth()+1,15);
+    return d>=periodStart && d<=periodEnd;
+  });
+
+  if(visible.length===0){
+    list.innerHTML='<div class="empty-state">Belum ada pengajuan libur untuk periode ini.</div>';
+  }else{
+    list.innerHTML=visible.map(req=>{
+      const statusClass={
+        pending:"badge-pending",
+        approved:"badge-approved",
+        rejected:"badge-rejected"
+      }[req.status];
+
+      const statusText={
+        pending:"Menunggu",
+        approved:"Disetujui",
+        rejected:"Ditolak"
+      }[req.status];
+
+      return `
+        <div class="request-card">
+          <div class="request-info">
+            <b>${req.employee}</b><br>
+            Tanggal: ${formatDate(req.date)}<br>
+            Alasan: ${escapeHTML(req.reason)}<br>
+            Status: <span class="badge ${statusClass}">${statusText}</span>
+          </div>
+          <div class="request-actions">
+            ${req.status==="pending"?`
+              <button class="btn-success btn-small" onclick="approveRequest('${req.id}')">Setujui</button>
+              <button class="btn-danger btn-small" onclick="rejectRequest('${req.id}')">Tolak</button>
+            `:""}
+            <button class="btn-light btn-small" onclick="deleteRequest('${req.id}')">Hapus</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  renderRequestConflicts();
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
+}
+
+function renderRequestConflicts(){
+  const dates=getDates();
+  let html="<thead><tr><th>Tanggal</th><th>Jumlah Request</th><th>Nama Karyawan</th><th>Status</th></tr></thead><tbody>";
+
+  dates.forEach(date=>{
+    const key=dateKey(date);
+    const sameDate=requests.filter(r=>
+      r.date===key && r.status!=="rejected"
+    );
+
+    if(sameDate.length>0){
+      const names=sameDate.map(r=>r.employee).join(", ");
+      const hasPending=sameDate.some(r=>r.status==="pending");
+
+      html+=`
+        <tr>
+          <td>${formatDate(key)}</td>
+          <td><b>${sameDate.length}</b> dari ${employees.length}</td>
+          <td>${escapeHTML(names)}</td>
+          <td>${hasPending?'<span class="badge badge-pending">Ada yang menunggu</span>':'<span class="badge badge-approved">Disetujui</span>'}</td>
+        </tr>
+      `;
+    }
+  });
+
+  html+="</tbody>";
+
+  const active=requests.some(r=>{
+    const d=getDates().some(date=>dateKey(date)===r.date);
+    return d&&r.status!=="rejected";
+  });
+
+  document.getElementById("requestConflictTable").innerHTML=
+    active?html:'<tbody><tr><td>Belum ada request aktif pada periode ini.</td></tr></tbody>';
+}
+
+/* =========================
+   PENGATURAN TARGET OFF
+========================= */
+
+function renderOffSettings(){
+  document.getElementById("offSettings").innerHTML=employees.map(employee=>`
+    <tr>
+      <td>${employee}</td>
+      <td>
+        <input type="number" min="0" max="30"
+          id="target-${employee}"
+          value="${Number(offTargets[employee]??8)}">
+      </td>
+    </tr>
+  `).join("");
+}
+
+function saveOffSettings(){
+  employees.forEach(employee=>{
+    const value=Number(document.getElementById("target-"+employee).value);
+
+    if(!Number.isInteger(value)||value<0||value>30){
+      alert("Target OFF harus berupa angka 0 sampai 30.");
+      return;
+    }
+
+    offTargets[employee]=value;
+  });
+
+  saveTargets();
+  renderSummary();
+  alert("Pengaturan target OFF berhasil disimpan.");
+}
+
+/* =========================
+   EXPORT CSV
+========================= */
 
 function exportCSV(){
   const dates=getDates();
@@ -591,7 +1194,9 @@ function exportCSV(){
     const row=[employee];
 
     dates.forEach(date=>{
-      row.push(data[employee+"_"+dateKey(date)]||"-");
+      let value=data[employee+"_"+dateKey(date)]||"-";
+      if(value==="A")value="-";
+      row.push(value);
     });
 
     rows.push(row);
@@ -614,11 +1219,16 @@ function exportCSV(){
   URL.revokeObjectURL(url);
 }
 
+/* =========================
+   RENDER UTAMA
+========================= */
+
 function render(){
   inputInitialSchedule();
 
-  const start=new Date(shown.getFullYear(),shown.getMonth(),16);
-  const end=new Date(shown.getFullYear(),shown.getMonth()+1,15);
+  const dates=getDates();
+  const start=dates[0];
+  const end=dates[29];
 
   const options={day:"numeric",month:"long",year:"numeric"};
 
@@ -626,9 +1236,16 @@ function render(){
     start.toLocaleDateString("id-ID",options)+" – "+
     end.toLocaleDateString("id-ID",options);
 
+  document.getElementById("lockStatus").innerHTML=isLocked()
+    ?'<span class="badge badge-locked">🔒 Jadwal Terkunci</span>'
+    :'<span class="badge badge-open">✏️ Jadwal Bisa Diedit</span>';
+
   renderTable();
   renderMobileCalendar();
   renderSummary();
+  setupRequestForm();
+  renderRequests();
+  renderOffSettings();
 }
 
 render();
