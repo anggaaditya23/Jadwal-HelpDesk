@@ -104,8 +104,14 @@ th:first-child,td:first-child{
   overflow:hidden;
 }
 .date-head{font-size:10px}
-.weekend{background:#fff1f2!important;color:#be123c!important}
-.holiday{background:#fee2e2!important;color:#b91c1c!important}
+.weekend{
+  background:#fff1f2!important;
+  color:#be123c!important;
+}
+.holiday{
+  background:#fee2e2!important;
+  color:#b91c1c!important;
+}
 .shift{
   display:inline-block;
   min-width:23px;
@@ -161,7 +167,7 @@ th:first-child,td:first-child{
   color:#475569;
 }
 
-/* Tampilan kalender HP */
+/* Kalender HP */
 .mobile-calendar{display:none}
 .employee-mobile-card{
   border:1px solid var(--border);
@@ -191,20 +197,26 @@ th:first-child,td:first-child{
 .mobile-day.weekend{
   background:#fff1f2!important;
 }
+.mobile-day.holiday{
+  background:#fee2e2!important;
+  border-color:#fecaca;
+}
 .mobile-day .day-number{
   display:block;
   font-size:10px;
   margin-bottom:4px;
   color:#64748b;
 }
+.mobile-day.weekend .day-number,
+.mobile-day.holiday .day-number{
+  color:#b91c1c!important;
+  font-weight:700;
+}
 .mobile-day .shift{
   min-width:0;
   width:100%;
   padding:5px 0;
   font-size:11px;
-}
-.mobile-day.empty{
-  visibility:hidden;
 }
 footer{
   text-align:center;
@@ -228,8 +240,16 @@ footer{
   .panel{padding:11px}
   .period{font-size:15px}
   .toolbar{align-items:flex-start}
-  .toolbar-buttons{width:100%;display:flex;gap:6px}
-  .toolbar-buttons button{flex:1;padding:9px 5px;font-size:11px}
+  .toolbar-buttons{
+    width:100%;
+    display:flex;
+    gap:6px;
+  }
+  .toolbar-buttons button{
+    flex:1;
+    padding:9px 5px;
+    font-size:11px;
+  }
   header h1{font-size:22px}
   .mobile-days{gap:4px}
   .mobile-day{padding:4px 1px}
@@ -284,6 +304,7 @@ footer{
       <span class="legend-item"><i class="dot" style="background:#fce7f3"></i>Alpha (A)</span>
       <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>OFF (L / R)</span>
       <span class="legend-item"><i class="dot" style="background:#ffedd5"></i>Cuti (C)</span>
+      <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Tanggal Merah</span>
     </div>
   </section>
 
@@ -304,7 +325,7 @@ footer{
       A = Alpha
     </p>
     <p class="note">
-      Warna merah pada tanggal menandakan hari Sabtu atau Minggu.
+      Warna merah menandakan hari Sabtu, Minggu, dan libur nasional.
       Data jadwal tersimpan pada browser/perangkat yang digunakan.
     </p>
   </section>
@@ -316,6 +337,49 @@ footer{
 <script>
 const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
 const codes=["-","P","S","M","L","A","R","C"];
+
+/* Daftar hari libur nasional resmi 2026 dan 2027 */
+const holidays=new Set([
+
+  // Tahun 2026
+  "2026-01-01",
+  "2026-01-16",
+  "2026-02-17",
+  "2026-03-19",
+  "2026-03-21",
+  "2026-03-22",
+  "2026-04-03",
+  "2026-04-05",
+  "2026-05-01",
+  "2026-05-14",
+  "2026-05-27",
+  "2026-05-31",
+  "2026-06-01",
+  "2026-06-16",
+  "2026-08-17",
+  "2026-08-25",
+  "2026-12-25",
+
+  // Tahun 2027
+  "2027-01-01",
+  "2027-01-05",
+  "2027-02-06",
+  "2027-03-08",
+  "2027-03-10",
+  "2027-03-11",
+  "2027-03-26",
+  "2027-03-28",
+  "2027-05-01",
+  "2027-05-06",
+  "2027-05-17",
+  "2027-05-20",
+  "2027-06-01",
+  "2027-06-06",
+  "2027-08-15",
+  "2027-08-17",
+  "2027-12-25",
+  "2027-12-26"
+]);
 
 let shown=new Date(2026,10,1);
 let data={};
@@ -346,6 +410,18 @@ function dateKey(date){
   return `${y}-${m}-${d}`;
 }
 
+function isWeekend(date){
+  return date.getDay()===0||date.getDay()===6;
+}
+
+function isHoliday(date){
+  return holidays.has(dateKey(date));
+}
+
+function isRedDate(date){
+  return isWeekend(date)||isHoliday(date);
+}
+
 function getDates(){
   const dates=[];
   for(let i=0;i<30;i++){
@@ -356,16 +432,19 @@ function getDates(){
 
 function inputInitialSchedule(){
   const dates=getDates();
+
   if(shown.getFullYear()!==2026 || shown.getMonth()!==10)return;
 
   employees.forEach(employee=>{
     dates.forEach((date,dayIndex)=>{
       const key=employee+"_"+dateKey(date);
+
       if(data[key]===undefined){
         data[key]=initialSchedule[employee][dayIndex]||"-";
       }
     });
   });
+
   saveData();
 }
 
@@ -404,12 +483,11 @@ function renderTable(){
   let html="<thead><tr><th>Karyawan</th>";
 
   dates.forEach(date=>{
-    const day=date.getDay();
-    const weekend=day===0||day===6;
+    const red=isRedDate(date);
 
-    html+=`<th class="date-head ${weekend?"weekend":""}">
+    html+=`<th class="date-head ${red?"holiday":""}">
       ${date.getDate()}<br>
-      <small>${["Min","Sen","Sel","Rab","Kam","Jum","Sab"][day]}</small>
+      <small>${["Min","Sen","Sel","Rab","Kam","Jum","Sab"][date.getDay()]}</small>
     </th>`;
   });
 
@@ -421,10 +499,9 @@ function renderTable(){
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
       const value=data[key]||"-";
-      const day=date.getDay();
-      const weekend=day===0||day===6;
+      const red=isRedDate(date);
 
-      html+=`<td class="${weekend?"weekend":""}">
+      html+=`<td class="${red?"holiday":""}">
         <span class="shift ${value}" onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">${value}</span>
       </td>`;
     });
@@ -450,11 +527,10 @@ function renderMobileCalendar(){
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
       const value=data[key]||"-";
-      const day=date.getDay();
-      const weekend=day===0||day===6;
+      const red=isRedDate(date);
 
       html+=`
-        <div class="mobile-day ${weekend?"weekend":""}">
+        <div class="mobile-day ${red?"holiday":""}">
           <span class="day-number">${date.getDate()}</span>
           <span class="shift ${value}"
             onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">
@@ -515,9 +591,11 @@ function exportCSV(){
 
   employees.forEach(employee=>{
     const row=[employee];
+
     dates.forEach(date=>{
       row.push(data[employee+"_"+dateKey(date)]||"-");
     });
+
     rows.push(row);
   });
 
