@@ -14,13 +14,13 @@ header p{margin:7px 0 0;color:#cbd5e1}
 main{max-width:1200px;margin:25px auto;padding:0 16px}
 .panel{background:white;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 14px #1725540c}
 .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-button,select{padding:10px 14px;border:1px solid #dbe1ea;border-radius:8px;background:white;cursor:pointer}
+button{padding:10px 14px;border:1px solid #dbe1ea;border-radius:8px;background:white;cursor:pointer}
 button.primary{background:#1d4ed8;color:white;border:0}
 .month{font-size:20px;font-weight:bold}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th,td{border:1px solid #e5e7eb;padding:9px;text-align:center}
-th{background:#f8fafc;font-size:12px}
-td:first-child{text-align:left;font-weight:bold}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{border:1px solid #e5e7eb;padding:7px;text-align:center}
+th{background:#f8fafc;font-size:12px;white-space:nowrap}
+td:first-child{text-align:left;font-weight:bold;position:sticky;left:0;background:white;z-index:1}
 .shift{border:0;border-radius:6px;padding:7px 10px;min-width:38px;font-weight:bold}
 .P{background:#dbeafe;color:#1d4ed8}
 .S{background:#fef3c7;color:#92400e}
@@ -32,7 +32,13 @@ td:first-child{text-align:left;font-weight:bold}
 .stat{background:#f8fafc;padding:15px;border-radius:10px}
 .stat strong{display:block;font-size:24px;margin-top:6px}
 small{color:#64748b}
-@media(max-width:600px){header{padding:20px}.panel{padding:13px}.month{font-size:17px}}
+.datehead{display:block;font-size:13px;font-weight:bold}
+.dayhead{display:block;font-size:10px;color:#64748b;margin-top:3px}
+@media(max-width:600px){
+ header{padding:20px}
+ .panel{padding:13px}
+ .month{font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -40,17 +46,18 @@ small{color:#64748b}
 <h1>Jadwal Shift Karyawan</h1>
 <p>Dashboard pengaturan jadwal kerja</p>
 </header>
+
 <main>
 <section class="panel">
 <div class="toolbar">
 <div>
 <div class="month" id="monthName"></div>
-<small>Klik kode shift untuk mengubah jadwal</small>
+<small>Periode jadwal tanggal 16 sampai tanggal 15</small>
 </div>
 <div>
 <button onclick="changeMonth(-1)">‹</button>
 <button onclick="changeMonth(1)">›</button>
-<button class="primary" onclick="resetMonth()">Bulan ini</button>
+<button class="primary" onclick="resetMonth()">Periode ini</button>
 </div>
 </div>
 </section>
@@ -67,68 +74,236 @@ small{color:#64748b}
 </section>
 
 <section class="panel">
-<h3>Rekap Shift Bulan Ini</h3>
+<h3>Rekap Shift Periode Ini</h3>
 <div class="stats" id="summary"></div>
 </section>
 </main>
+
 <script>
 const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
 const codes=["-","P","S","M","L","A"];
-let shown=new Date();
+
+let today=new Date();
+let shown=new Date(today.getFullYear(),today.getMonth(),1);
+
+if(today.getDate()<16){
+ shown.setMonth(shown.getMonth()-1);
+}
+
 let data=JSON.parse(localStorage.getItem("jadwalShift")||"{}");
 
-function key(){return shown.getFullYear()+"-"+(shown.getMonth()+1)}
-function save(){localStorage.setItem("jadwalShift",JSON.stringify(data))}
-function changeMonth(n){shown.setMonth(shown.getMonth()+n);render()}
-function resetMonth(){shown=new Date();render()}
+// Format tanggal lokal agar tidak bergeser karena zona waktu
+function dateKey(date){
+ const y=date.getFullYear();
+ const m=String(date.getMonth()+1).padStart(2,"0");
+ const d=String(date.getDate()).padStart(2,"0");
+ return `${y}-${m}-${d}`;
+}
+
+// Kunci periode berdasarkan bulan tanggal 16
+function key(){
+ return shown.getFullYear()+"-"+(shown.getMonth()+1);
+}
+
+// Migrasi jadwal lama agar data yang pernah diisi tetap terbaca
+function migrateOldData(){
+ let changed=false;
+
+ Object.keys(data).forEach(oldKey=>{
+  const match=oldKey.match(/^(\d{4})-(\d+)-(\d+)-(\d+)$/);
+  if(!match)return;
+
+  const year=Number(match[1]);
+  const month=Number(match[2])-1;
+  const employee=Number(match[3]);
+  const day=Number(match[4]);
+
+  if(employee<0 || employee>=employees.length)return;
+
+  const date=new Date(year,month,day);
+  if(date.getFullYear()!==year ||
+     date.getMonth()!==month ||
+     date.getDate()!==day)return;
+
+  const period=new Date(year,month,1);
+  if(day<16)period.setMonth(period.getMonth()-1);
+
+  const periodKey=period.getFullYear()+"-"+(period.getMonth()+1);
+  const newKey=`${periodKey}-${employee}-${dateKey(date)}`;
+
+  if(data[newKey]===undefined){
+   data[newKey]=data[oldKey];
+  }
+
+  delete data[oldKey];
+  changed=true;
+ });
+
+ if(changed)save();
+}
+
+function save(){
+ localStorage.setItem("jadwalShift",JSON.stringify(data));
+}
+
+function getPeriodDates(){
+ const dates=[];
+ const year=shown.getFullYear();
+ const month=shown.getMonth();
+
+ // Tanggal 16 sampai akhir bulan periode awal
+ const lastDay=new Date(year,month+1,0).getDate();
+
+ for(let d=16;d<=lastDay;d++){
+  dates.push(new Date(year,month,d));
+ }
+
+ // Tanggal 1 sampai 15 bulan berikutnya
+ for(let d=1;d<=15;d++){
+  dates.push(new Date(year,month+1,d));
+ }
+
+ return dates;
+}
+
+function formatDate(date){
+ return date.toLocaleDateString("id-ID",{
+  day:"numeric",
+  month:"long",
+  year:"numeric"
+ });
+}
+
+function periodName(){
+ const dates=getPeriodDates();
+ return `${formatDate(dates[0])} – ${formatDate(dates[dates.length-1])}`;
+}
+
+function changeMonth(n){
+ shown.setMonth(shown.getMonth()+n);
+ render();
+}
+
+function resetMonth(){
+ const now=new Date();
+ shown=new Date(now.getFullYear(),now.getMonth(),1);
+
+ if(now.getDate()<16){
+  shown.setMonth(shown.getMonth()-1);
+ }
+
+ render();
+}
+
 function render(){
- const y=shown.getFullYear(),m=shown.getMonth(),days=new Date(y,m+1,0).getDate();
- document.getElementById("monthName").textContent=shown.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+ const dates=getPeriodDates();
+
+ document.getElementById("monthName").textContent=periodName();
+
  let html="<tr><th>Karyawan</th>";
- for(let d=1;d<=days;d++)html+=`<th>${d}</th>`;
+
+ dates.forEach(date=>{
+  const weekday=date.toLocaleDateString("id-ID",{weekday:"short"});
+  const month=date.toLocaleDateString("id-ID",{month:"short"});
+  html+=`<th>
+   <span class="datehead">${date.getDate()} ${month}</span>
+   <span class="dayhead">${weekday}</span>
+  </th>`;
+ });
+
  html+="</tr>";
+
  employees.forEach((name,i)=>{
   html+=`<tr><td>${name}</td>`;
-  for(let d=1;d<=days;d++){
-   const k=`${key()}-${i}-${d}`,v=data[k]||"-";
-   html+=`<td><button class="shift ${v}" onclick="editShift(${i},${d})">${v}</button></td>`;
-  }
+
+  dates.forEach(date=>{
+   const k=`${key()}-${i}-${dateKey(date)}`;
+   const v=data[k]||"-";
+
+   html+=`<td><button class="shift ${v}" onclick="editShift(${i},'${dateKey(date)}')">${v}</button></td>`;
+  });
+
   html+="</tr>";
  });
+
  document.getElementById("schedule").innerHTML=html;
- renderSummary(days);
+ renderSummary(dates);
 }
-function editShift(i,d){
- const k=`${key()}-${i}-${d}`;
+
+function editShift(i,dateString){
+ const k=`${key()}-${i}-${dateString}`;
  const current=data[k]||"-";
- const answer=prompt(`Jadwal ${employees[i]} tanggal ${d}\nIsi: P / S / M / L / A / -`,current);
+
+ const answer=prompt(
+  `Jadwal ${employees[i]} tanggal ${dateString}\nIsi: P / S / M / L / A / -`,
+  current
+ );
+
  if(answer===null)return;
+
  const v=answer.trim().toUpperCase();
- if(!codes.includes(v)){alert("Gunakan kode P, S, M, L, A, atau -.");return}
- if(v==="-")delete data[k];else data[k]=v;
- save();render();
+
+ if(!codes.includes(v)){
+  alert("Gunakan kode P, S, M, L, A, atau -.");
+  return;
+ }
+
+ if(v==="-")delete data[k];
+ else data[k]=v;
+
+ save();
+ render();
 }
-function renderSummary(days){
+
+function renderSummary(dates){
  let html="";
+
  employees.forEach((name,i)=>{
   let counts={P:0,S:0,M:0,L:0,A:0};
-  for(let d=1;d<=days;d++){
-   const v=data[`${key()}-${i}-${d}`];
+
+  dates.forEach(date=>{
+   const v=data[`${key()}-${i}-${dateKey(date)}`];
    if(counts[v]!==undefined)counts[v]++;
-  }
-  html+=`<div class="stat"><b>${name}</b><strong>${counts.P+counts.S+counts.M}</strong><small>P ${counts.P} · S ${counts.S} · M ${counts.M} · L ${counts.L}</small></div>`;
+  });
+
+  html+=`<div class="stat">
+   <b>${name}</b>
+   <strong>${counts.P+counts.S+counts.M}</strong>
+   <small>P ${counts.P} · S ${counts.S} · M ${counts.M} · L ${counts.L} · A ${counts.A}</small>
+  </div>`;
  });
+
  document.getElementById("summary").innerHTML=html;
 }
+
 function exportCSV(){
- const y=shown.getFullYear(),m=shown.getMonth(),days=new Date(y,m+1,0).getDate();
- let rows=[["Karyawan",...Array.from({length:days},(_,i)=>i+1)]];
- employees.forEach((name,i)=>rows.push([name,...Array.from({length:days},(_,j)=>data[`${key()}-${i}-${j+1}`]||"-")]));
+ const dates=getPeriodDates();
+
+ let rows=[
+  ["Karyawan",...dates.map(date=>dateKey(date))]
+ ];
+
+ employees.forEach((name,i)=>{
+  rows.push([
+   name,
+   ...dates.map(date=>data[`${key()}-${i}-${dateKey(date)}`]||"-")
+  ]);
+ });
+
  const csv="\uFEFF"+rows.map(r=>r.join(";")).join("\n");
  const a=document.createElement("a");
- a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
- a.download="jadwal-shift-"+key()+".csv";a.click();
+
+ a.href=URL.createObjectURL(
+  new Blob([csv],{type:"text/csv;charset=utf-8"})
+ );
+
+ a.download="jadwal-shift-"+key()+"-periode-16-15.csv";
+ a.click();
+
+ URL.revokeObjectURL(a.href);
 }
+
+migrateOldData();
 render();
 </script>
 </body>
