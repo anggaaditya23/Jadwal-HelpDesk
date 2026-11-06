@@ -5,35 +5,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jadwal Shift Karyawan</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f5f9;color:#202938;font-family:Arial,sans-serif}
-header{background:#172554;color:white;padding:24px 5%}
+
+body{
+ margin:0;
+ background:#f3f5f9;
+ color:#202938;
+ font-family:Arial,sans-serif
+}
+
+header{
+ background:#172554;
+ color:white;
+ padding:24px 5%
+}
+
 header h1{margin:0;font-size:24px}
 header p{margin:7px 0 0;color:#cbd5e1}
-main{max-width:1200px;margin:25px auto;padding:0 16px}
-.panel{background:white;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 14px #1725540c}
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-button{padding:10px 14px;border:1px solid #dbe1ea;border-radius:8px;background:white;cursor:pointer}
-button.primary{background:#1d4ed8;color:white;border:0}
+
+main{
+ max-width:1200px;
+ margin:25px auto;
+ padding:0 16px
+}
+
+.panel{
+ background:white;
+ border-radius:14px;
+ padding:20px;
+ margin-bottom:18px;
+ box-shadow:0 3px 14px #1725540c
+}
+
+.toolbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap
+}
+
+button{
+ padding:10px 14px;
+ border:1px solid #dbe1ea;
+ border-radius:8px;
+ background:white;
+ cursor:pointer
+}
+
+button.primary{
+ background:#1d4ed8;
+ color:white;
+ border:0
+}
+
 .month{font-size:20px;font-weight:bold}
-table{width:100%;border-collapse:collapse;min-width:850px}
-th,td{border:1px solid #e5e7eb;padding:7px;text-align:center}
-th{background:#f8fafc;font-size:12px;white-space:nowrap}
-td:first-child{text-align:left;font-weight:bold;position:sticky;left:0;background:white;z-index:1}
-.shift{border:0;border-radius:6px;padding:7px 10px;min-width:38px;font-weight:bold}
+
+.tablewrap{overflow-x:auto}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:850px
+}
+
+th,td{
+ border:1px solid #e5e7eb;
+ padding:7px;
+ text-align:center
+}
+
+th{
+ background:#f8fafc;
+ font-size:12px;
+ white-space:nowrap
+}
+
+td:first-child{
+ text-align:left;
+ font-weight:bold;
+ position:sticky;
+ left:0;
+ background:white;
+ z-index:1
+}
+
+.shift{
+ border:0;
+ border-radius:6px;
+ padding:7px 10px;
+ min-width:38px;
+ font-weight:bold
+}
+
 .P{background:#dbeafe;color:#1d4ed8}
 .S{background:#fef3c7;color:#92400e}
 .M{background:#ede9fe;color:#6d28d9}
 .L{background:#dcfce7;color:#166534}
 .A{background:#fee2e2;color:#991b1b}
-.tablewrap{overflow-x:auto}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
-.stat{background:#f8fafc;padding:15px;border-radius:10px}
-.stat strong{display:block;font-size:24px;margin-top:6px}
+
+.red-day{
+ background:#fee2e2 !important;
+ color:#b91c1c !important
+}
+
+.red-day .dayhead{
+ color:#b91c1c;
+ font-weight:bold
+}
+
+.datehead{
+ display:block;
+ font-size:13px;
+ font-weight:bold
+}
+
+.dayhead{
+ display:block;
+ font-size:10px;
+ color:#64748b;
+ margin-top:3px
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+ gap:12px
+}
+
+.stat{
+ background:#f8fafc;
+ padding:15px;
+ border-radius:10px
+}
+
+.stat strong{
+ display:block;
+ font-size:24px;
+ margin-top:6px
+}
+
 small{color:#64748b}
-.datehead{display:block;font-size:13px;font-weight:bold}
-.dayhead{display:block;font-size:10px;color:#64748b;margin-top:3px}
+
+.legend{
+ display:flex;
+ flex-wrap:wrap;
+ gap:12px;
+ margin-top:12px;
+ font-size:12px
+}
+
+.legend span{
+ display:flex;
+ align-items:center;
+ gap:5px
+}
+
+.legend i{
+ width:12px;
+ height:12px;
+ border-radius:3px;
+ display:inline-block
+}
+
 @media(max-width:600px){
  header{padding:20px}
  .panel{padding:13px}
@@ -41,76 +177,222 @@ small{color:#64748b}
 }
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>Jadwal Shift Karyawan</h1>
-<p>Dashboard pengaturan jadwal kerja</p>
+ <h1>Jadwal Shift Karyawan</h1>
+ <p>Dashboard pengaturan jadwal kerja</p>
 </header>
 
 <main>
+
 <section class="panel">
-<div class="toolbar">
-<div>
-<div class="month" id="monthName"></div>
-<small>Periode jadwal tanggal 16 sampai tanggal 15</small>
-</div>
-<div>
-<button onclick="changeMonth(-1)">‹</button>
-<button onclick="changeMonth(1)">›</button>
-<button class="primary" onclick="resetMonth()">Periode ini</button>
-</div>
-</div>
+ <div class="toolbar">
+  <div>
+   <div class="month" id="monthName"></div>
+   <small>Periode jadwal tanggal 16 sampai tanggal 15</small>
+  </div>
+
+  <div>
+   <button onclick="changeMonth(-1)">‹</button>
+   <button onclick="changeMonth(1)">›</button>
+   <button class="primary" onclick="resetMonth()">Periode ini</button>
+  </div>
+ </div>
 </section>
 
 <section class="panel">
-<div class="toolbar">
-<h3>Kalender Jadwal</h3>
-<button class="primary" onclick="exportCSV()">Unduh Excel (CSV)</button>
-</div>
-<div class="tablewrap">
-<table id="schedule"></table>
-</div>
-<p><small>Pagi (P) · Siang (S) · Malam (M) · Libur (L) · Absen (A) · Kosong (-)</small></p>
+ <div class="toolbar">
+  <h3>Kalender Jadwal</h3>
+  <button class="primary" onclick="exportCSV()">Unduh Excel (CSV)</button>
+ </div>
+
+ <div class="tablewrap">
+  <table id="schedule"></table>
+ </div>
+
+ <p>
+  <small>
+   Pagi (P) · Siang (S) · Malam (M) · Libur (L) ·
+   Absen (A) · Kosong (-)
+  </small>
+ </p>
+
+ <div class="legend">
+  <span><i style="background:#fee2e2"></i> Sabtu, Minggu, dan tanggal merah</span>
+  <span><i style="background:#dbeafe"></i> Shift Pagi</span>
+  <span><i style="background:#fef3c7"></i> Shift Siang</span>
+  <span><i style="background:#ede9fe"></i> Shift Malam</span>
+ </div>
 </section>
 
 <section class="panel">
-<h3>Rekap Shift Periode Ini</h3>
-<div class="stats" id="summary"></div>
+ <h3>Rekap Shift Periode Ini</h3>
+ <div class="stats" id="summary"></div>
 </section>
+
 </main>
 
 <script>
-const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
+
+// =====================================
+// DATA KARYAWAN DAN KODE SHIFT
+// =====================================
+
+const employees=[
+ "HUDA",
+ "SAHRUL",
+ "FERDI",
+ "MANAP",
+ "PAREL",
+ "ADIT"
+];
+
 const codes=["-","P","S","M","L","A"];
 
+// =====================================
+// DAFTAR TANGGAL MERAH
+// Format: YYYY-MM-DD
+// Tambahkan tanggal libur nasional atau
+// cuti bersama di dalam daftar ini.
+// =====================================
+
+const holidays=new Set([
+
+ // Contoh tanggal merah 2026
+ "2026-01-01",
+ "2026-02-16",
+ "2026-02-17",
+ "2026-03-18",
+ "2026-03-19",
+ "2026-03-20",
+ "2026-03-21",
+ "2026-03-22",
+ "2026-03-23",
+ "2026-03-24",
+ "2026-04-03",
+ "2026-04-05",
+ "2026-05-01",
+ "2026-05-14",
+ "2026-05-15",
+ "2026-05-27",
+ "2026-05-28",
+ "2026-05-31",
+ "2026-06-01",
+ "2026-06-16",
+ "2026-08-17",
+ "2026-08-25",
+ "2026-12-24",
+ "2026-12-25",
+
+ // Contoh tanggal merah 2027
+ // Periksa dan sesuaikan dengan kalender
+ // resmi pemerintah ketika sudah ditetapkan.
+ "2027-01-01",
+ "2027-01-05",
+ "2027-02-05",
+ "2027-02-06",
+ "2027-03-08",
+ "2027-03-09",
+ "2027-03-10",
+ "2027-03-11",
+ "2027-03-12",
+ "2027-03-15",
+ "2027-03-25",
+ "2027-03-26",
+ "2027-03-28",
+ "2027-05-01",
+ "2027-05-06",
+ "2027-05-17",
+ "2027-05-18",
+ "2027-05-19",
+ "2027-05-20",
+ "2027-06-01",
+ "2027-06-06",
+ "2027-08-15",
+ "2027-08-17",
+ "2027-12-24",
+ "2027-12-25",
+ "2027-12-26"
+
+]);
+
+// =====================================
+// PENGATURAN PERIODE
+// =====================================
+
 let today=new Date();
-let shown=new Date(today.getFullYear(),today.getMonth(),1);
+
+let shown=new Date(
+ today.getFullYear(),
+ today.getMonth(),
+ 1
+);
 
 if(today.getDate()<16){
  shown.setMonth(shown.getMonth()-1);
 }
 
-let data=JSON.parse(localStorage.getItem("jadwalShift")||"{}");
+// Penyimpanan lokal browser
+let data=JSON.parse(
+ localStorage.getItem("jadwalShift")||"{}"
+);
 
-// Format tanggal lokal agar tidak bergeser karena zona waktu
+// =====================================
+// FUNGSI TANGGAL
+// =====================================
+
 function dateKey(date){
  const y=date.getFullYear();
  const m=String(date.getMonth()+1).padStart(2,"0");
  const d=String(date.getDate()).padStart(2,"0");
+
  return `${y}-${m}-${d}`;
 }
 
-// Kunci periode berdasarkan bulan tanggal 16
 function key(){
  return shown.getFullYear()+"-"+(shown.getMonth()+1);
 }
 
-// Migrasi jadwal lama agar data yang pernah diisi tetap terbaca
+function formatDate(date){
+ return date.toLocaleDateString("id-ID",{
+  day:"numeric",
+  month:"long",
+  year:"numeric"
+ });
+}
+
+function isRedDay(date){
+ const weekend=
+  date.getDay()===0 ||
+  date.getDay()===6;
+
+ return weekend || holidays.has(dateKey(date));
+}
+
+// =====================================
+// PENYIMPANAN DATA
+// =====================================
+
+function save(){
+ localStorage.setItem(
+  "jadwalShift",
+  JSON.stringify(data)
+ );
+}
+
+// Migrasi data jadwal lama ke format periode baru
 function migrateOldData(){
+
  let changed=false;
 
  Object.keys(data).forEach(oldKey=>{
-  const match=oldKey.match(/^(\d{4})-(\d+)-(\d+)-(\d+)$/);
+
+  const match=oldKey.match(
+   /^(\d{4})-(\d+)-(\d+)-(\d+)$/
+  );
+
   if(!match)return;
 
   const year=Number(match[1]);
@@ -121,15 +403,24 @@ function migrateOldData(){
   if(employee<0 || employee>=employees.length)return;
 
   const date=new Date(year,month,day);
-  if(date.getFullYear()!==year ||
-     date.getMonth()!==month ||
-     date.getDate()!==day)return;
+
+  if(
+   date.getFullYear()!==year ||
+   date.getMonth()!==month ||
+   date.getDate()!==day
+  )return;
 
   const period=new Date(year,month,1);
-  if(day<16)period.setMonth(period.getMonth()-1);
 
-  const periodKey=period.getFullYear()+"-"+(period.getMonth()+1);
-  const newKey=`${periodKey}-${employee}-${dateKey(date)}`;
+  if(day<16){
+   period.setMonth(period.getMonth()-1);
+  }
+
+  const periodKey=
+   period.getFullYear()+"-"+(period.getMonth()+1);
+
+  const newKey=
+   `${periodKey}-${employee}-${dateKey(date)}`;
 
   if(data[newKey]===undefined){
    data[newKey]=data[oldKey];
@@ -137,22 +428,28 @@ function migrateOldData(){
 
   delete data[oldKey];
   changed=true;
+
  });
 
  if(changed)save();
 }
 
-function save(){
- localStorage.setItem("jadwalShift",JSON.stringify(data));
-}
+// =====================================
+// MEMBUAT TANGGAL 16 SAMPAI 15
+// =====================================
 
 function getPeriodDates(){
+
  const dates=[];
  const year=shown.getFullYear();
  const month=shown.getMonth();
 
- // Tanggal 16 sampai akhir bulan periode awal
- const lastDay=new Date(year,month+1,0).getDate();
+ // Tanggal 16 sampai akhir bulan pertama
+ const lastDay=new Date(
+  year,
+  month+1,
+  0
+ ).getDate();
 
  for(let d=16;d<=lastDay;d++){
   dates.push(new Date(year,month,d));
@@ -166,18 +463,20 @@ function getPeriodDates(){
  return dates;
 }
 
-function formatDate(date){
- return date.toLocaleDateString("id-ID",{
-  day:"numeric",
-  month:"long",
-  year:"numeric"
- });
+function periodName(){
+
+ const dates=getPeriodDates();
+
+ return (
+  formatDate(dates[0])+
+  " – "+
+  formatDate(dates[dates.length-1])
+ );
 }
 
-function periodName(){
- const dates=getPeriodDates();
- return `${formatDate(dates[0])} – ${formatDate(dates[dates.length-1])}`;
-}
+// =====================================
+// NAVIGASI PERIODE
+// =====================================
 
 function changeMonth(n){
  shown.setMonth(shown.getMonth()+n);
@@ -185,8 +484,14 @@ function changeMonth(n){
 }
 
 function resetMonth(){
+
  const now=new Date();
- shown=new Date(now.getFullYear(),now.getMonth(),1);
+
+ shown=new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  1
+ );
 
  if(now.getDate()<16){
   shown.setMonth(shown.getMonth()-1);
@@ -195,43 +500,93 @@ function resetMonth(){
  render();
 }
 
+// =====================================
+// TAMPILAN KALENDER
+// =====================================
+
 function render(){
+
  const dates=getPeriodDates();
 
- document.getElementById("monthName").textContent=periodName();
+ document.getElementById("monthName").textContent=
+  periodName();
 
  let html="<tr><th>Karyawan</th>";
 
  dates.forEach(date=>{
-  const weekday=date.toLocaleDateString("id-ID",{weekday:"short"});
-  const month=date.toLocaleDateString("id-ID",{month:"short"});
-  html+=`<th>
-   <span class="datehead">${date.getDate()} ${month}</span>
-   <span class="dayhead">${weekday}</span>
-  </th>`;
+
+  const weekday=date.toLocaleDateString(
+   "id-ID",
+   {weekday:"short"}
+  );
+
+  const month=date.toLocaleDateString(
+   "id-ID",
+   {month:"short"}
+  );
+
+  const redClass=
+   isRedDay(date)?"red-day":"";
+
+  html+=`
+   <th class="${redClass}">
+    <span class="datehead">
+     ${date.getDate()} ${month}
+    </span>
+    <span class="dayhead">
+     ${weekday}
+    </span>
+   </th>
+  `;
  });
 
  html+="</tr>";
 
  employees.forEach((name,i)=>{
+
   html+=`<tr><td>${name}</td>`;
 
   dates.forEach(date=>{
-   const k=`${key()}-${i}-${dateKey(date)}`;
+
+   const k=
+    `${key()}-${i}-${dateKey(date)}`;
+
    const v=data[k]||"-";
 
-   html+=`<td><button class="shift ${v}" onclick="editShift(${i},'${dateKey(date)}')">${v}</button></td>`;
+   const redClass=
+    isRedDay(date)?"red-day":"";
+
+   html+=`
+    <td class="${redClass}">
+     <button
+      class="shift ${v}"
+      onclick="editShift(${i},'${dateKey(date)}')"
+     >
+      ${v}
+     </button>
+    </td>
+   `;
+
   });
 
   html+="</tr>";
+
  });
 
  document.getElementById("schedule").innerHTML=html;
+
  renderSummary(dates);
 }
 
+// =====================================
+// EDIT SHIFT
+// =====================================
+
 function editShift(i,dateString){
- const k=`${key()}-${i}-${dateString}`;
+
+ const k=
+  `${key()}-${i}-${dateString}`;
+
  const current=data[k]||"-";
 
  const answer=prompt(
@@ -244,67 +599,131 @@ function editShift(i,dateString){
  const v=answer.trim().toUpperCase();
 
  if(!codes.includes(v)){
-  alert("Gunakan kode P, S, M, L, A, atau -.");
+  alert(
+   "Gunakan kode P, S, M, L, A, atau -."
+  );
   return;
  }
 
- if(v==="-")delete data[k];
- else data[k]=v;
+ if(v==="-"){
+  delete data[k];
+ }else{
+  data[k]=v;
+ }
 
  save();
  render();
 }
 
+// =====================================
+// REKAP SHIFT
+// =====================================
+
 function renderSummary(dates){
+
  let html="";
 
  employees.forEach((name,i)=>{
-  let counts={P:0,S:0,M:0,L:0,A:0};
+
+  let counts={
+   P:0,
+   S:0,
+   M:0,
+   L:0,
+   A:0
+  };
 
   dates.forEach(date=>{
-   const v=data[`${key()}-${i}-${dateKey(date)}`];
-   if(counts[v]!==undefined)counts[v]++;
+
+   const v=
+    data[`${key()}-${i}-${dateKey(date)}`];
+
+   if(counts[v]!==undefined){
+    counts[v]++;
+   }
+
   });
 
-  html+=`<div class="stat">
-   <b>${name}</b>
-   <strong>${counts.P+counts.S+counts.M}</strong>
-   <small>P ${counts.P} · S ${counts.S} · M ${counts.M} · L ${counts.L} · A ${counts.A}</small>
-  </div>`;
+  const total=
+   counts.P+counts.S+counts.M;
+
+  html+=`
+   <div class="stat">
+    <b>${name}</b>
+    <strong>${total}</strong>
+    <small>
+     P ${counts.P} ·
+     S ${counts.S} ·
+     M ${counts.M} ·
+     L ${counts.L} ·
+     A ${counts.A}
+    </small>
+   </div>
+  `;
+
  });
 
  document.getElementById("summary").innerHTML=html;
 }
 
+// =====================================
+// DOWNLOAD EXCEL / CSV
+// =====================================
+
 function exportCSV(){
+
  const dates=getPeriodDates();
 
  let rows=[
-  ["Karyawan",...dates.map(date=>dateKey(date))]
+  [
+   "Karyawan",
+   ...dates.map(date=>dateKey(date))
+  ]
  ];
 
  employees.forEach((name,i)=>{
+
   rows.push([
    name,
-   ...dates.map(date=>data[`${key()}-${i}-${dateKey(date)}`]||"-")
+   ...dates.map(date=>
+    data[
+     `${key()}-${i}-${dateKey(date)}`
+    ]||"-"
+   )
   ]);
+
  });
 
- const csv="\uFEFF"+rows.map(r=>r.join(";")).join("\n");
- const a=document.createElement("a");
+ const csv="\uFEFF"+
+  rows.map(r=>r.join(";")).join("\n");
 
- a.href=URL.createObjectURL(
-  new Blob([csv],{type:"text/csv;charset=utf-8"})
+ const blob=new Blob(
+  [csv],
+  {type:"text/csv;charset=utf-8"}
  );
 
- a.download="jadwal-shift-"+key()+"-periode-16-15.csv";
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download=
+  "jadwal-shift-"+key()+"-periode-16-15.csv";
+
  a.click();
 
- URL.revokeObjectURL(a.href);
+ setTimeout(()=>{
+  URL.revokeObjectURL(url);
+ },1000);
 }
+
+// =====================================
+// JALANKAN APLIKASI
+// =====================================
 
 migrateOldData();
 render();
+
 </script>
 </body>
 </html>
