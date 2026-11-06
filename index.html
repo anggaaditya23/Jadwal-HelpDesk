@@ -60,31 +60,11 @@ button{
   font-size:13px;
 }
 .btn-primary{background:var(--blue);color:white}
-.btn-dark{background:var(--navy);color:white}
 .btn-light{background:white;color:var(--text);border:1px solid var(--border)}
 button:hover{opacity:.88}
 .period{
   font-size:18px;
   font-weight:700;
-}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-  margin-bottom:20px;
-}
-.stat-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:17px;
-  box-shadow:0 3px 10px rgba(15,23,42,.03);
-}
-.stat-card small{color:var(--muted);font-size:12px}
-.stat-card strong{
-  display:block;
-  font-size:27px;
-  margin-top:8px;
 }
 .panel{
   background:white;
@@ -95,17 +75,22 @@ button:hover{opacity:.88}
   box-shadow:0 3px 10px rgba(15,23,42,.03);
 }
 .panel h2{font-size:17px;margin:0 0 15px}
-.table-wrap{overflow-x:auto}
+.note{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+.table-wrap{width:100%;overflow:visible}
 table{
   width:100%;
+  table-layout:fixed;
   border-collapse:collapse;
-  min-width:900px;
 }
 th,td{
   border:1px solid var(--border);
-  padding:9px 7px;
+  padding:7px 2px;
   text-align:center;
-  font-size:12px;
+  font-size:11px;
 }
 th{
   background:#f1f5f9;
@@ -113,25 +98,23 @@ th{
   font-weight:700;
 }
 th:first-child,td:first-child{
-  position:sticky;
-  left:0;
-  z-index:2;
+  width:85px;
   background:#f8fafc;
   font-weight:700;
-  min-width:105px;
+  overflow:hidden;
 }
-th:first-child{z-index:3}
-.date-head{min-width:38px}
+.date-head{font-size:10px}
 .weekend{background:#fff1f2!important;color:#be123c!important}
 .holiday{background:#fee2e2!important;color:#b91c1c!important}
 .shift{
   display:inline-block;
-  min-width:29px;
-  padding:7px 5px;
+  min-width:23px;
+  padding:6px 2px;
   border:1px solid transparent;
-  border-radius:6px;
+  border-radius:5px;
   font-weight:700;
   cursor:pointer;
+  font-size:11px;
 }
 .shift:hover{outline:2px solid #93c5fd}
 .P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
@@ -144,6 +127,7 @@ th:first-child{z-index:3}
   border-color:#bbf7d0;
 }
 .C{background:#ffedd5;color:#9a3412;border-color:#fed7aa}
+
 .legend{
   display:flex;
   flex-wrap:wrap;
@@ -161,7 +145,7 @@ th:first-child{z-index:3}
 }
 .summary-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:12px;
 }
 .summary-card{
@@ -176,10 +160,51 @@ th:first-child{z-index:3}
   font-size:12px;
   color:#475569;
 }
-.note{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
+
+/* Tampilan kalender HP */
+.mobile-calendar{display:none}
+.employee-mobile-card{
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:12px;
+  margin-bottom:13px;
+  background:white;
+}
+.employee-mobile-card h3{
+  margin:0 0 10px;
+  font-size:14px;
+  color:var(--navy);
+}
+.mobile-days{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:5px;
+}
+.mobile-day{
+  min-width:0;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:5px 1px;
+  text-align:center;
+  background:#f8fafc;
+}
+.mobile-day.weekend{
+  background:#fff1f2!important;
+}
+.mobile-day .day-number{
+  display:block;
+  font-size:10px;
+  margin-bottom:4px;
+  color:#64748b;
+}
+.mobile-day .shift{
+  min-width:0;
+  width:100%;
+  padding:5px 0;
+  font-size:11px;
+}
+.mobile-day.empty{
+  visibility:hidden;
 }
 footer{
   text-align:center;
@@ -187,16 +212,27 @@ footer{
   font-size:11px;
   padding:15px;
 }
+
+/* Tablet dan HP */
 @media(max-width:800px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .desktop-calendar{display:none}
+  .mobile-calendar{display:block}
+  .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   header{padding:20px}
+  .container{padding:0 12px 25px}
+  .panel{padding:13px}
 }
 @media(max-width:500px){
   .summary-grid{grid-template-columns:1fr}
-  .container{padding:0 10px 20px}
-  .panel{padding:12px}
+  .container{padding:0 9px 20px}
+  .panel{padding:11px}
   .period{font-size:15px}
+  .toolbar{align-items:flex-start}
+  .toolbar-buttons{width:100%;display:flex;gap:6px}
+  .toolbar-buttons button{flex:1;padding:9px 5px;font-size:11px}
+  header h1{font-size:22px}
+  .mobile-days{gap:4px}
+  .mobile-day{padding:4px 1px}
 }
 </style>
 </head>
@@ -222,22 +258,24 @@ footer{
       <div class="period" id="periodTitle">Jadwal Shift</div>
       <div class="note">Periode jadwal tanggal 16 sampai 15 bulan berikutnya</div>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <div class="toolbar-buttons" style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-light" onclick="changeMonth(-1)">‹ Sebelumnya</button>
       <button class="btn-light" onclick="changeMonth(1)">Berikutnya ›</button>
-      <button class="btn-primary" onclick="exportCSV()">Export Excel / CSV</button>
+      <button class="btn-primary" onclick="exportCSV()">Export CSV</button>
     </div>
   </div>
-
 
   <section class="panel">
     <h2>Kalender Jadwal Karyawan</h2>
     <div class="note" style="margin-bottom:12px">
-      Klik kode shift pada tabel untuk mengubah jadwal. Perubahan tersimpan otomatis di browser ini.
+      Klik kode shift untuk mengubah jadwal. Perubahan tersimpan otomatis di browser ini.
     </div>
-    <div class="table-wrap">
+
+    <div class="table-wrap desktop-calendar">
       <table id="scheduleTable"></table>
     </div>
+
+    <div class="mobile-calendar" id="mobileCalendar"></div>
 
     <div class="legend">
       <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
@@ -320,7 +358,7 @@ function inputInitialSchedule(){
   const dates=getDates();
   if(shown.getFullYear()!==2026 || shown.getMonth()!==10)return;
 
-  employees.forEach((employee,employeeIndex)=>{
+  employees.forEach(employee=>{
     dates.forEach((date,dayIndex)=>{
       const key=employee+"_"+dateKey(date);
       if(data[key]===undefined){
@@ -339,6 +377,7 @@ function changeMonth(direction){
 function editShift(employee,date){
   const key=employee+"_"+dateKey(date);
   const current=data[key]||"-";
+
   const answer=prompt(
     "Ubah jadwal "+employee+" tanggal "+dateKey(date)+"\n\n"+
     "P = Pagi\nS = Siang\nM = Malam\nL = OFF\nR = OFF\nA = Alpha\nC = Cuti\n- = Kosong\n\n"+
@@ -349,6 +388,7 @@ function editShift(employee,date){
   if(answer===null)return;
 
   const value=answer.trim().toUpperCase();
+
   if(!codes.includes(value)){
     alert("Kode tidak valid. Gunakan: P, S, M, L, A, R, C, atau -");
     return;
@@ -366,6 +406,7 @@ function renderTable(){
   dates.forEach(date=>{
     const day=date.getDay();
     const weekend=day===0||day===6;
+
     html+=`<th class="date-head ${weekend?"weekend":""}">
       ${date.getDate()}<br>
       <small>${["Min","Sen","Sel","Rab","Kam","Jum","Sab"][day]}</small>
@@ -376,15 +417,18 @@ function renderTable(){
 
   employees.forEach(employee=>{
     html+=`<tr><td>${employee}</td>`;
+
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
       const value=data[key]||"-";
       const day=date.getDay();
       const weekend=day===0||day===6;
+
       html+=`<td class="${weekend?"weekend":""}">
         <span class="shift ${value}" onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">${value}</span>
       </td>`;
     });
+
     html+="</tr>";
   });
 
@@ -392,21 +436,41 @@ function renderTable(){
   document.getElementById("scheduleTable").innerHTML=html;
 }
 
-function renderStats(){
-  let totalShift=0;
-  let totalLeave=0;
-  let totalCuti=0;
+function renderMobileCalendar(){
+  const dates=getDates();
+  let html="";
 
-  Object.values(data).forEach(value=>{
-    if(["P","S","M"].includes(value))totalShift++;
-    if(value==="L"||value==="R")totalLeave++;
-    if(value==="C")totalCuti++;
+  employees.forEach(employee=>{
+    html+=`
+      <div class="employee-mobile-card">
+        <h3>${employee}</h3>
+        <div class="mobile-days">
+    `;
+
+    dates.forEach(date=>{
+      const key=employee+"_"+dateKey(date);
+      const value=data[key]||"-";
+      const day=date.getDay();
+      const weekend=day===0||day===6;
+
+      html+=`
+        <div class="mobile-day ${weekend?"weekend":""}">
+          <span class="day-number">${date.getDate()}</span>
+          <span class="shift ${value}"
+            onclick="editShift('${employee}',new Date(${date.getFullYear()},${date.getMonth()},${date.getDate()}))">
+            ${value}
+          </span>
+        </div>
+      `;
+    });
+
+    html+=`
+        </div>
+      </div>
+    `;
   });
 
-  document.getElementById("totalEmployee").textContent=employees.length;
-  document.getElementById("totalShift").textContent=totalShift;
-  document.getElementById("totalLeave").textContent=totalLeave;
-  document.getElementById("totalCuti").textContent=totalCuti;
+  document.getElementById("mobileCalendar").innerHTML=html;
 }
 
 function renderSummary(){
@@ -464,8 +528,10 @@ function exportCSV(){
   const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob);
   const link=document.createElement("a");
+
   link.href=url;
   link.download="Jadwal-WorkShift-"+dateKey(dates[0])+".csv";
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -479,12 +545,13 @@ function render(){
   const end=new Date(shown.getFullYear(),shown.getMonth()+1,15);
 
   const options={day:"numeric",month:"long",year:"numeric"};
+
   document.getElementById("periodTitle").textContent=
     start.toLocaleDateString("id-ID",options)+" – "+
     end.toLocaleDateString("id-ID",options);
 
   renderTable();
-  renderStats();
+  renderMobileCalendar();
   renderSummary();
 }
 
