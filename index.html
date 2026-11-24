@@ -793,6 +793,47 @@ function renderMobileCalendar(){
 }
 
 /* REKAPITULASI */
+  /* KETERANGAN TANGGAL MERAH */
+function renderHolidayNotes(){
+  const dates=getDates();
+
+  const nationalHolidays=dates.filter(
+    date=>holidayNames[dateKey(date)]
+  );
+
+  const container=document.getElementById("holidayNotes");
+
+  if(!nationalHolidays.length){
+    container.innerHTML=`
+      <h3>Keterangan Tanggal Merah</h3>
+      <div class="holiday-notes-empty">
+        Tidak ada hari libur nasional pada periode ini.
+      </div>
+    `;
+    return;
+  }
+
+  let html=`
+    <h3>📌 Keterangan Tanggal Merah / Hari Libur Nasional</h3>
+  `;
+
+  nationalHolidays.forEach(date=>{
+    const label=date.toLocaleDateString("id-ID",{
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
+
+    html+=`
+      <div class="holiday-note-item">
+        <span class="holiday-note-date">${label}</span>
+        <span>— ${holidayNames[dateKey(date)]}</span>
+      </div>
+    `;
+  });
+
+  container.innerHTML=html;
+}
 function renderSummary(){
   const dates=getDates();
   let html="";
