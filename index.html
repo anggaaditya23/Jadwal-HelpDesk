@@ -302,41 +302,6 @@ th{
 }
 
 .mobile-calendar{display:none}
-  /* KETERANGAN HARI LIBUR NASIONAL */
-.holiday-notes{
-  margin-top:14px;
-  padding:12px 14px;
-  border:1px solid #fecaca;
-  border-left:4px solid #dc2626;
-  border-radius:9px;
-  background:#fff7f7;
-}
-
-.holiday-notes h3{
-  margin:0 0 8px;
-  color:#991b1b;
-  font-size:13px;
-}
-
-.holiday-note-item{
-  display:flex;
-  gap:8px;
-  align-items:flex-start;
-  padding:5px 0;
-  color:#7f1d1d;
-  font-size:12px;
-  line-height:1.45;
-}
-
-.holiday-note-date{
-  min-width:105px;
-  font-weight:700;
-}
-
-.holiday-notes-empty{
-  color:#64748b;
-  font-size:12px;
-}
 
 footer{
   text-align:center;
@@ -435,7 +400,6 @@ footer{
       </div>
 
       <div class="mobile-calendar" id="mobileCalendar"></div>
-      <div class="holiday-notes" id="holidayNotes"></div>
 
       <div class="legend">
         <span class="legend-item">
@@ -502,44 +466,6 @@ const employees=[
 const codes=["-","P","S","M","L","R","C"];
 
 const holidays=new Set([
-  const holidayNames={
-  "2026-01-01":"Tahun Baru Masehi",
-  "2026-01-16":"Isra Mikraj Nabi Muhammad S.A.W.",
-  "2026-02-17":"Tahun Baru Imlek",
-  "2026-03-19":"Hari Suci Nyepi",
-  "2026-03-21":"Hari Raya Idul Fitri",
-  "2026-03-22":"Hari Raya Idul Fitri",
-  "2026-04-03":"Wafat Yesus Kristus",
-  "2026-04-05":"Hari Paskah",
-  "2026-05-01":"Hari Buruh Internasional",
-  "2026-05-14":"Kenaikan Yesus Kristus",
-  "2026-05-27":"Hari Raya Idul Adha",
-  "2026-05-31":"Hari Raya Waisak",
-  "2026-06-01":"Hari Lahir Pancasila",
-  "2026-06-16":"Tahun Baru Islam",
-  "2026-08-17":"Hari Kemerdekaan Republik Indonesia",
-  "2026-08-25":"Maulid Nabi Muhammad S.A.W.",
-  "2026-12-25":"Hari Raya Natal",
-
-  "2027-01-01":"Tahun Baru Masehi",
-  "2027-01-05":"Isra Mikraj Nabi Muhammad S.A.W.",
-  "2027-02-06":"Tahun Baru Imlek",
-  "2027-03-08":"Hari Suci Nyepi",
-  "2027-03-10":"Hari Raya Idul Fitri",
-  "2027-03-11":"Hari Raya Idul Fitri",
-  "2027-03-26":"Wafat Yesus Kristus",
-  "2027-03-28":"Hari Paskah",
-  "2027-05-01":"Hari Buruh Internasional",
-  "2027-05-06":"Kenaikan Yesus Kristus",
-  "2027-05-17":"Hari Raya Idul Adha",
-  "2027-05-20":"Hari Raya Waisak",
-  "2027-06-01":"Hari Lahir Pancasila",
-  "2027-06-06":"Tahun Baru Islam",
-  "2027-08-15":"Maulid Nabi Muhammad S.A.W.",
-  "2027-08-17":"Hari Kemerdekaan Republik Indonesia",
-  "2027-12-25":"Hari Raya Natal",
-  "2027-12-26":"Isra Mikraj Nabi Muhammad S.A.W."
-};
   "2026-01-01","2026-01-16","2026-02-17","2026-03-19",
   "2026-03-21","2026-03-22","2026-04-03","2026-04-05",
   "2026-05-01","2026-05-14","2026-05-27","2026-05-31",
@@ -793,47 +719,6 @@ function renderMobileCalendar(){
 }
 
 /* REKAPITULASI */
-  /* KETERANGAN TANGGAL MERAH */
-function renderHolidayNotes(){
-  const dates=getDates();
-
-  const nationalHolidays=dates.filter(
-    date=>holidayNames[dateKey(date)]
-  );
-
-  const container=document.getElementById("holidayNotes");
-
-  if(!nationalHolidays.length){
-    container.innerHTML=`
-      <h3>Keterangan Tanggal Merah</h3>
-      <div class="holiday-notes-empty">
-        Tidak ada hari libur nasional pada periode ini.
-      </div>
-    `;
-    return;
-  }
-
-  let html=`
-    <h3>📌 Keterangan Tanggal Merah / Hari Libur Nasional</h3>
-  `;
-
-  nationalHolidays.forEach(date=>{
-    const label=date.toLocaleDateString("id-ID",{
-      day:"numeric",
-      month:"long",
-      year:"numeric"
-    });
-
-    html+=`
-      <div class="holiday-note-item">
-        <span class="holiday-note-date">${label}</span>
-        <span>— ${holidayNames[dateKey(date)]}</span>
-      </div>
-    `;
-  });
-
-  container.innerHTML=html;
-}
 function renderSummary(){
   const dates=getDates();
   let html="";
@@ -949,9 +834,8 @@ function render(){
     :'<span class="badge badge-open">✏️ Jadwal Bisa Diedit</span>';
 
   renderTable();
-renderMobileCalendar();
-renderHolidayNotes();
-renderSummary();
+  renderMobileCalendar();
+  renderSummary();
 }
 
 render();
