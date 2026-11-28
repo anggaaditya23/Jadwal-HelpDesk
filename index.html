@@ -15,301 +15,97 @@
   --text:#1e293b;
   --muted:#64748b
 }
-
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text)
-}
-
-header{
-  background:linear-gradient(120deg,#14213d,#243b67);
-  color:white;
-  padding:24px 28px
-}
-
-.header-inner{
-  max-width:1400px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap
-}
-
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(120deg,#14213d,#243b67);color:white;padding:24px 28px}
+.header-inner{max-width:1400px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 header h1{margin:0;font-size:25px}
 header p{margin:7px 0 0;color:#cbd5e1;font-size:13px}
-
-.container{
-  max-width:1400px;
-  margin:24px auto;
-  padding:0 20px 30px
-}
-
-.toolbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-bottom:18px
-}
-
-.toolbar-buttons{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap
-}
-
-button{
-  border:0;
-  border-radius:9px;
-  padding:10px 15px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:13px
-}
-
+.container{max-width:1400px;margin:24px auto;padding:0 20px 30px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.toolbar-buttons{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:9px;padding:10px 15px;cursor:pointer;font-weight:600;font-size:13px}
 button:hover{opacity:.88}
 button:disabled{opacity:.45;cursor:not-allowed}
-
 .btn-primary{background:var(--blue);color:white}
 .btn-light{background:white;color:var(--text);border:1px solid var(--border)}
 .btn-success{background:#15803d;color:white}
 .btn-danger{background:#dc2626;color:white}
 .btn-warning{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
 .btn-small{padding:7px 10px;font-size:11px}
-
 .period{font-size:18px;font-weight:700}
-
-.panel{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:20px;
-  box-shadow:0 3px 10px rgba(15,23,42,.03)
-}
-
+.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:20px;box-shadow:0 3px 10px rgba(15,23,42,.03)}
 .panel h2{font-size:17px;margin:0 0 15px}
 .panel h3{font-size:14px;margin:0 0 12px}
-
-.note{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6
-}
-
-.badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:700
-}
-
+.note{color:var(--muted);font-size:12px;line-height:1.6}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:700}
 .badge-locked{background:#e2e8f0;color:#334155}
 .badge-open{background:#dbeafe;color:#1d4ed8}
-
 .tab-content{display:none}
 .tab-content.active{display:block}
-
 .table-wrap{width:100%;overflow-x:auto}
-
-table{
-  width:100%;
-  border-collapse:collapse
-}
-
-th,td{
-  border:1px solid var(--border);
-  padding:8px;
-  text-align:center;
-  font-size:12px
-}
-
-th{
-  background:#f1f5f9;
-  color:#334155;
-  font-weight:700
-}
-
-.schedule-table{
-  table-layout:fixed;
-  min-width:1000px
-}
-
-.schedule-table th,
-.schedule-table td{
-  padding:7px 2px;
-  font-size:11px
-}
-
-.schedule-table th:first-child,
-.schedule-table td:first-child{
-  width:85px;
-  background:#f8fafc;
-  font-weight:700
-}
-
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid var(--border);padding:8px;text-align:center;font-size:12px}
+th{background:#f1f5f9;color:#334155;font-weight:700}
+.schedule-table{table-layout:fixed;min-width:1000px}
+.schedule-table th,.schedule-table td{padding:7px 2px;font-size:11px}
+.schedule-table th:first-child,.schedule-table td:first-child{width:85px;background:#f8fafc;font-weight:700}
 .date-head{font-size:10px}
-
-.holiday{
-  background:#fee2e2!important;
-  color:#b91c1c!important
-}
-
-.shift{
-  display:inline-block;
-  min-width:23px;
-  padding:6px 2px;
-  border:1px solid transparent;
-  border-radius:5px;
-  font-weight:700;
-  cursor:pointer;
-  font-size:11px
-}
-
+.holiday{background:#fee2e2!important;color:#b91c1c!important}
+.shift{display:inline-block;min-width:23px;padding:6px 2px;border:1px solid transparent;border-radius:5px;font-weight:700;cursor:pointer;font-size:11px}
 .shift:hover{outline:2px solid #93c5fd}
-
 .P{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
 .S{background:#fef3c7;color:#92400e;border-color:#fde68a}
 .M{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
 .L,.R{background:#dcfce7;color:#166534;border-color:#bbf7d0}
 .C{background:#ffedd5;color:#9a3412;border-color:#fed7aa}
-
-.shift.disabled{
-  cursor:not-allowed;
-  opacity:.7
-}
-
-/* Dropdown edit jadwal langsung */
-.shift-dropdown{
-  width:100%;
-  min-width:30px;
-  padding:5px 1px;
-  border:2px solid #2563eb;
-  border-radius:5px;
-  font-size:12px;
-  font-weight:700;
-  text-align:center;
-  background:white;
-  color:#1e293b;
-  cursor:pointer;
-  outline:none
-}
-
-.legend{
-  display:flex;
-  flex-wrap:wrap;
-  gap:14px;
-  margin-top:15px;
-  font-size:12px;
-  color:#475569
-}
-
-.legend-item{
-  display:flex;
-  align-items:center;
-  gap:6px
-}
-
-.dot{
-  width:12px;
-  height:12px;
-  border-radius:4px;
-  display:inline-block
-}
-
-.summary-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px
-}
-
-.summary-card{
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px;
-  background:#fff
-}
-
-.summary-card h3{
-  font-size:14px;
-  margin:0 0 9px
-}
-
-.summary-card p{
-  margin:5px 0;
-  font-size:12px;
-  color:#475569
-}
-
-.employee-mobile-card{
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:12px;
-  margin-bottom:13px;
-  background:white
-}
-
-.employee-mobile-card h3{
-  margin:0 0 10px;
-  font-size:14px;
-  color:var(--navy)
-}
-
-.mobile-days{
-  display:grid;
-  grid-template-columns:repeat(7,minmax(0,1fr));
-  gap:5px
-}
-
-.mobile-day{
-  min-width:0;
-  border:1px solid var(--border);
-  border-radius:6px;
-  padding:5px 1px;
-  text-align:center;
-  background:#f8fafc
-}
-
-.mobile-day.holiday{
-  background:#fee2e2;
-  border-color:#fecaca
-}
-
-.mobile-day .day-number{
-  display:block;
-  font-size:10px;
-  margin-bottom:4px;
-  color:#64748b
-}
-
-.mobile-day.holiday .day-number{
-  color:#b91c1c;
-  font-weight:700
-}
-
-.mobile-day .shift{
-  min-width:0;
-  width:100%;
-  padding:5px 0;
-  font-size:11px
-}
-
+.shift.disabled{cursor:not-allowed;opacity:.7}
+.shift-dropdown{width:100%;min-width:30px;padding:5px 1px;border:2px solid #2563eb;border-radius:5px;font-size:12px;font-weight:700;text-align:center;background:white;color:#1e293b;cursor:pointer;outline:none}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:15px;font-size:12px;color:#475569}
+.legend-item{display:flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.summary-card{border:1px solid var(--border);border-radius:10px;padding:13px;background:#fff}
+.summary-card h3{font-size:14px;margin:0 0 9px}
+.summary-card p{margin:5px 0;font-size:12px;color:#475569}
+.employee-mobile-card{border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:13px;background:white}
+.employee-mobile-card h3{margin:0 0 10px;font-size:14px;color:var(--navy)}
+.mobile-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.mobile-day{min-width:0;border:1px solid var(--border);border-radius:6px;padding:5px 1px;text-align:center;background:#f8fafc}
+.mobile-day.holiday{background:#fee2e2;border-color:#fecaca}
+.mobile-day .day-number{display:block;font-size:10px;margin-bottom:4px;color:#64748b}
+.mobile-day.holiday .day-number{color:#b91c1c;font-weight:700}
+.mobile-day .shift{min-width:0;width:100%;padding:5px 0;font-size:11px}
 .mobile-calendar{display:none}
 
-footer{
-  text-align:center;
-  color:#94a3b8;
-  font-size:11px;
-  padding:15px
+/* KETERANGAN TANGGAL MERAH */
+.holiday-notes{
+  margin-top:16px;
+  padding:14px;
+  border:1px solid #fecaca;
+  border-left:4px solid #dc2626;
+  border-radius:10px;
+  background:#fff7f7;
 }
+.holiday-notes h3{
+  margin:0 0 10px;
+  color:#991b1b;
+  font-size:14px;
+}
+.holiday-note-item{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:7px 0;
+  border-bottom:1px solid #fee2e2;
+  color:#7f1d1d;
+  font-size:12px;
+  line-height:1.5;
+}
+.holiday-note-item:last-child{border-bottom:0}
+.holiday-note-date{min-width:125px;font-weight:700}
+.holiday-notes-empty{color:#64748b;font-size:12px}
+footer{text-align:center;color:#94a3b8;font-size:11px;padding:15px}
 
 @media(max-width:800px){
   .desktop-calendar{display:none}
@@ -319,7 +115,6 @@ footer{
   .container{padding:0 12px 25px}
   .panel{padding:13px}
 }
-
 @media(max-width:500px){
   .summary-grid{grid-template-columns:1fr}
   .container{padding:0 9px 20px}
@@ -327,70 +122,51 @@ footer{
   .period{font-size:15px}
   .toolbar{align-items:flex-start}
   .toolbar-buttons{width:100%}
-  .toolbar-buttons button{
-    flex:1;
-    padding:9px 5px;
-    font-size:11px
-  }
+  .toolbar-buttons button{flex:1;padding:9px 5px;font-size:11px}
   header h1{font-size:22px}
   .mobile-days{gap:4px}
   .mobile-day{padding:4px 1px}
+  .holiday-note-item{gap:5px}
+  .holiday-note-date{min-width:110px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <div class="header-inner">
     <div>
       <h1>WorkShift Pro</h1>
       <p>Dashboard Manajemen Jadwal HelpDesk</p>
     </div>
-    <div style="font-size:12px;color:#cbd5e1">
-      STAFF SHIFT MANAGEMENT
-    </div>
+    <div style="font-size:12px;color:#cbd5e1">STAFF SHIFT MANAGEMENT</div>
   </div>
 </header>
 
 <main class="container">
-
   <div class="toolbar">
     <div>
       <div class="period" id="periodTitle">Jadwal Shift</div>
-      <div class="note">
-        Periode jadwal tanggal 16 sampai 15 bulan berikutnya
-      </div>
+      <div class="note">Periode jadwal tanggal 16 sampai 15 bulan berikutnya</div>
       <div id="lockStatus" style="margin-top:7px"></div>
     </div>
-
     <div class="toolbar-buttons">
-      <button class="btn-light" onclick="changeMonth(-1)">
-        ‹ Sebelumnya
-      </button>
-      <button class="btn-light" onclick="changeMonth(1)">
-        Berikutnya ›
-      </button>
+      <button class="btn-light" onclick="changeMonth(-1)">‹ Sebelumnya</button>
+      <button class="btn-light" onclick="changeMonth(1)">Berikutnya ›</button>
     </div>
   </div>
 
   <section class="tab-content active" id="tab-jadwal">
-
     <section class="panel">
       <h2>Kontrol Jadwal</h2>
       <div class="toolbar-buttons">
-        <button class="btn-success" onclick="toggleLock()">
-          🔒 Kunci / Buka Jadwal
-        </button>
-        <button class="btn-light" onclick="exportCSV()">
-          Export CSV
-        </button>
+        <button class="btn-success" onclick="toggleLock()">🔒 Kunci / Buka Jadwal</button>
+        <button class="btn-light" onclick="exportCSV()">Export CSV</button>
       </div>
     </section>
 
     <section class="panel">
       <h2>Kalender Jadwal Karyawan</h2>
-
       <div class="note" style="margin-bottom:12px">
         Klik kode shift untuk mengubah jadwal melalui dropdown.
         Perubahan tersimpan otomatis di browser ini.
@@ -399,34 +175,18 @@ footer{
       <div class="table-wrap desktop-calendar">
         <table class="schedule-table" id="scheduleTable"></table>
       </div>
-
       <div class="mobile-calendar" id="mobileCalendar"></div>
 
+      <!-- Keterangan hari libur ditampilkan tepat di bawah kalender -->
+      <div class="holiday-notes" id="holidayNotes"></div>
+
       <div class="legend">
-        <span class="legend-item">
-          <i class="dot" style="background:#dbeafe"></i>
-          Pagi (P)
-        </span>
-        <span class="legend-item">
-          <i class="dot" style="background:#fef3c7"></i>
-          Siang (S)
-        </span>
-        <span class="legend-item">
-          <i class="dot" style="background:#ede9fe"></i>
-          Malam (M)
-        </span>
-        <span class="legend-item">
-          <i class="dot" style="background:#dcfce7"></i>
-          OFF (L / R)
-        </span>
-        <span class="legend-item">
-          <i class="dot" style="background:#ffedd5"></i>
-          Cuti (C)
-        </span>
-        <span class="legend-item">
-          <i class="dot" style="background:#fee2e2"></i>
-          Tanggal Merah
-        </span>
+        <span class="legend-item"><i class="dot" style="background:#dbeafe"></i>Pagi (P)</span>
+        <span class="legend-item"><i class="dot" style="background:#fef3c7"></i>Siang (S)</span>
+        <span class="legend-item"><i class="dot" style="background:#ede9fe"></i>Malam (M)</span>
+        <span class="legend-item"><i class="dot" style="background:#dcfce7"></i>OFF (L / R)</span>
+        <span class="legend-item"><i class="dot" style="background:#ffedd5"></i>Cuti (C)</span>
+        <span class="legend-item"><i class="dot" style="background:#fee2e2"></i>Tanggal Merah</span>
       </div>
     </section>
 
@@ -448,35 +208,60 @@ footer{
         yang digunakan.
       </p>
     </section>
-
   </section>
 </main>
 
 <footer>WorkShift Pro · HelpDesk Shift Management</footer>
 
 <script>
-const employees=[
-  "HUDA",
-  "SAHRUL",
-  "FERDI",
-  "MANAP",
-  "PAREL",
-  "ADIT"
-];
-
+const employees=["HUDA","SAHRUL","FERDI","MANAP","PAREL","ADIT"];
 const codes=["-","P","S","M","L","R","C"];
 
-const holidays=new Set([
-  "2026-01-01","2026-01-16","2026-02-17","2026-03-19",
-  "2026-03-21","2026-03-22","2026-04-03","2026-04-05",
-  "2026-05-01","2026-05-14","2026-05-27","2026-05-31",
-  "2026-06-01","2026-06-16","2026-08-17","2026-08-25",
-  "2026-12-25","2027-01-01","2027-01-05","2027-02-06",
-  "2027-03-08","2027-03-10","2027-03-11","2027-03-26",
-  "2027-03-28","2027-05-01","2027-05-06","2027-05-17",
-  "2027-05-20","2027-06-01","2027-06-06","2027-08-15",
-  "2027-08-17","2027-12-25","2027-12-26"
-]);
+/*
+  Nama hari libur mengikuti daftar tanggal yang sudah ada
+  pada kode awal. Silakan verifikasi tanggal hari libur
+  keagamaan dengan kalender resmi pemerintah.
+*/
+const holidayNames={
+  "2026-01-01":"Tahun Baru Masehi",
+  "2026-01-16":"Isra Mikraj Nabi Muhammad SAW",
+  "2026-02-17":"Tahun Baru Imlek",
+  "2026-03-19":"Hari Suci Nyepi",
+  "2026-03-21":"Hari Raya Idul Fitri",
+  "2026-03-22":"Hari Raya Idul Fitri",
+  "2026-04-03":"Wafat Yesus Kristus",
+  "2026-04-05":"Hari Paskah",
+  "2026-05-01":"Hari Buruh Internasional",
+  "2026-05-14":"Kenaikan Yesus Kristus",
+  "2026-05-27":"Hari Raya Idul Adha",
+  "2026-05-31":"Hari Raya Waisak",
+  "2026-06-01":"Hari Lahir Pancasila",
+  "2026-06-16":"Tahun Baru Islam",
+  "2026-08-17":"Hari Kemerdekaan Republik Indonesia",
+  "2026-08-25":"Maulid Nabi Muhammad SAW",
+  "2026-12-25":"Hari Raya Natal",
+
+  "2027-01-01":"Tahun Baru Masehi",
+  "2027-01-05":"Isra Mikraj Nabi Muhammad SAW",
+  "2027-02-06":"Tahun Baru Imlek",
+  "2027-03-08":"Hari Suci Nyepi",
+  "2027-03-10":"Hari Raya Idul Fitri",
+  "2027-03-11":"Hari Raya Idul Fitri",
+  "2027-03-26":"Wafat Yesus Kristus",
+  "2027-03-28":"Hari Paskah",
+  "2027-05-01":"Hari Buruh Internasional",
+  "2027-05-06":"Kenaikan Yesus Kristus",
+  "2027-05-17":"Hari Raya Idul Adha",
+  "2027-05-20":"Hari Raya Waisak",
+  "2027-06-01":"Hari Lahir Pancasila",
+  "2027-06-06":"Tahun Baru Islam",
+  "2027-08-15":"Maulid Nabi Muhammad SAW",
+  "2027-08-17":"Hari Kemerdekaan Republik Indonesia",
+  "2027-12-25":"Hari Raya Natal",
+  "2027-12-26":"Isra Mikraj Nabi Muhammad SAW"
+};
+
+const holidays=new Set(Object.keys(holidayNames));
 
 let shown=new Date(2026,10,1);
 
@@ -525,14 +310,9 @@ function getDates(date=shown){
   const start=new Date(date.getFullYear(),date.getMonth(),16);
   const end=new Date(date.getFullYear(),date.getMonth()+1,15);
 
-  for(
-    let current=new Date(start);
-    current<=end;
-    current.setDate(current.getDate()+1)
-  ){
+  for(let current=new Date(start);current<=end;current.setDate(current.getDate()+1)){
     dates.push(new Date(current));
   }
-
   return dates;
 }
 
@@ -553,11 +333,7 @@ function isLocked(){
 }
 
 function changeMonth(direction){
-  shown=new Date(
-    shown.getFullYear(),
-    shown.getMonth()+direction,
-    1
-  );
+  shown=new Date(shown.getFullYear(),shown.getMonth()+direction,1);
   render();
 }
 
@@ -592,8 +368,8 @@ function editShift(element,employee,date){
 
   const key=employee+"_"+dateKey(date);
   const current=data[key]||"-";
-
   const select=document.createElement("select");
+
   select.className="shift-dropdown";
   select.setAttribute("aria-label","Ubah jadwal "+employee);
 
@@ -601,11 +377,7 @@ function editShift(element,employee,date){
     const option=document.createElement("option");
     option.value=code;
     option.textContent=code;
-
-    if(code===current){
-      option.selected=true;
-    }
-
+    if(code===current)option.selected=true;
     select.appendChild(option);
   });
 
@@ -622,11 +394,8 @@ function editShift(element,employee,date){
     render();
   };
 
-  /* Pada browser desktop, buka pilihan setelah diklik */
   select.addEventListener("keydown",function(event){
-    if(event.key==="Escape"){
-      render();
-    }
+    if(event.key==="Escape")render();
   });
 }
 
@@ -667,7 +436,6 @@ function renderTable(){
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
       let value=data[key]||"-";
-
       if(value==="A")value="-";
 
       html+=`<td class="${isRedDate(date)?"holiday":""}">
@@ -682,7 +450,6 @@ function renderTable(){
   });
 
   html+="</tbody>";
-
   document.getElementById("scheduleTable").innerHTML=html;
 }
 
@@ -690,7 +457,6 @@ function renderTable(){
 function renderMobileCalendar(){
   const dates=getDates();
   const locked=isLocked();
-
   let html="";
 
   employees.forEach(employee=>{
@@ -701,7 +467,6 @@ function renderMobileCalendar(){
     dates.forEach(date=>{
       const key=employee+"_"+dateKey(date);
       let value=data[key]||"-";
-
       if(value==="A")value="-";
 
       html+=`<div class="mobile-day ${isRedDate(date)?"holiday":""}">
@@ -719,37 +484,57 @@ function renderMobileCalendar(){
   document.getElementById("mobileCalendar").innerHTML=html;
 }
 
+/* KETERANGAN TANGGAL MERAH / HARI LIBUR NASIONAL */
+function renderHolidayNotes(){
+  const dates=getDates();
+  const nationalHolidays=dates.filter(date=>holidayNames[dateKey(date)]);
+  const container=document.getElementById("holidayNotes");
+
+  let html="<h3>📌 Keterangan Tanggal Merah / Hari Libur Nasional</h3>";
+
+  if(nationalHolidays.length===0){
+    html+=`<div class="holiday-notes-empty">
+      Tidak ada hari libur nasional yang tercatat pada periode ini.
+    </div>`;
+    container.innerHTML=html;
+    return;
+  }
+
+  nationalHolidays.forEach(date=>{
+    const label=date.toLocaleDateString("id-ID",{
+      weekday:"long",
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
+
+    html+=`<div class="holiday-note-item">
+      <span class="holiday-note-date">${label}</span>
+      <span>— ${holidayNames[dateKey(date)]}</span>
+    </div>`;
+  });
+
+  container.innerHTML=html;
+}
+
 /* REKAPITULASI */
 function renderSummary(){
   const dates=getDates();
   let html="";
 
   employees.forEach(employee=>{
-    const c={
-      P:0,
-      S:0,
-      M:0,
-      L:0,
-      R:0,
-      C:0,
-      blank:0
-    };
+    const c={P:0,S:0,M:0,L:0,R:0,C:0,blank:0};
 
     dates.forEach(date=>{
       let value=data[employee+"_"+dateKey(date)]||"-";
-
       if(value==="A")value="-";
 
-      if(c[value]!==undefined){
-        c[value]++;
-      }else{
-        c.blank++;
-      }
+      if(c[value]!==undefined)c[value]++;
+      else c.blank++;
     });
 
     const total=c.P+c.S+c.M;
     const totalOff=c.L+c.R;
-    const target=8;
 
     html+=`<div class="summary-card">
       <h3>${employee}</h3>
@@ -771,19 +556,14 @@ function exportCSV(){
   const dates=getDates();
   const rows=[];
 
-  rows.push([
-    "Karyawan",
-    ...dates.map(date=>dateKey(date))
-  ]);
+  rows.push(["Karyawan",...dates.map(date=>dateKey(date))]);
 
   employees.forEach(employee=>{
     const row=[employee];
 
     dates.forEach(date=>{
       let value=data[employee+"_"+dateKey(date)]||"-";
-
       if(value==="A")value="-";
-
       row.push(value);
     });
 
@@ -794,11 +574,7 @@ function exportCSV(){
     row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(";")
   ).join("\n");
 
-  const blob=new Blob(
-    ["\uFEFF"+csv],
-    {type:"text/csv;charset=utf-8;"}
-  );
-
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob);
   const link=document.createElement("a");
 
@@ -808,11 +584,10 @@ function exportCSV(){
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-
   URL.revokeObjectURL(url);
 }
 
-/* RENDER SEMUA */
+/* RENDER SEMUA KOMPONEN */
 function render(){
   inputInitialSchedule();
 
@@ -820,11 +595,7 @@ function render(){
   const start=dates[0];
   const end=dates[dates.length-1];
 
-  const options={
-    day:"numeric",
-    month:"long",
-    year:"numeric"
-  };
+  const options={day:"numeric",month:"long",year:"numeric"};
 
   document.getElementById("periodTitle").textContent=
     start.toLocaleDateString("id-ID",options)+" – "+
@@ -836,11 +607,11 @@ function render(){
 
   renderTable();
   renderMobileCalendar();
+  renderHolidayNotes();
   renderSummary();
 }
 
 render();
 </script>
-
 </body>
 </html>
